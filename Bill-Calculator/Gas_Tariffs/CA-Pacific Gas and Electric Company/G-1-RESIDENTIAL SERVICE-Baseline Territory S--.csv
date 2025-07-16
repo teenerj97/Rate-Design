@@ -1,0 +1,12 @@
+Component Description,EffDate,Rate,Rate Determinant,Start,End,Season
+Procurement Charge,2025-05-01,0.2873,per therm,,,""
+Public Purpose Programs Surcharge,2025-01-01,0.14324,per therm,,,""
+Transportation Charge,2025-01-01,2.11999,per therm,"",0.3900000,04/01-10/31
+Transportation Charge,2025-01-01,2.63697,per therm,0.4000000,"",04/01-10/31
+Transportation Charge,2025-01-01,2.11999,per therm,"",1.3800000,11/01-11/30
+Transportation Charge,2025-01-01,2.63697,per therm,1.3900000,"",11/01-11/30
+Transportation Charge,2025-01-01,2.11999,per therm,"",1.3800000,02/01-03/31
+Transportation Charge,2025-01-01,2.63697,per therm,1.3900000,"",02/01-03/31
+Transportation Charge,2025-01-01,2.11999,per therm,"",1.9400000,12/01-01/31
+Transportation Charge,2025-01-01,2.63697,per therm,1.9500000,"",12/01-01/31
+"California Natural Gas Climate Credit, annual payment in April",2025-01-01,-67.03,per year,,,
