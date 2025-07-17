@@ -1,9 +1,4 @@
 
-HIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-
-
-
-
 import os
 os.chdir("c:/Users/jack.teener/OneDrive - RMI/Desktop/Rate Design/resstock2")
 print(os.getcwd())  
