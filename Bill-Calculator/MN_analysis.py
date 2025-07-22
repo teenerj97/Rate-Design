@@ -1,5 +1,5 @@
 import os
-os.chdir("c:/Users/jack.teener/OneDrive - RMI/Desktop/Rate Design/resstock2")
+os.chdir("workspace")
 print(os.getcwd())  
 import warnings
 warnings.filterwarnings("ignore")
