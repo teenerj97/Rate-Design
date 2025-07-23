@@ -1,3 +1,4 @@
 cleaned_resstock_data/*
 !cleaned_resstock_data/full_data_with_utility.csv
 filepaths.json
+README.md
