@@ -65,20 +65,17 @@ def get_load_profiles(state, ids, upgrade=0, write=True):
         if os.path.exists(f"load_profiles/{state}/{id}-{upgrade}.csv"):
             agg_bldg = pl.read_csv(f"load_profiles/{state}/{id}-{upgrade}.csv")
         else:
-            # hourly aggregation
-            agg_bldg = (
-                cur_bldg
-                .with_columns(pl.col("timestamp").dt.truncate("1h").dt.strftime("%Y-%m-%dT%H:%M:%S.%f").alias("timestamp"))
-                .group_by(["bldg_id","timestamp"])
-                .agg([
-                    pl.col("out.electricity.total.energy_consumption").sum().alias("electricity.total"),
-                    pl.col("out.electricity.heating.energy_consumption").sum().alias("electrictiy.heating"),
-                    pl.col("out.electricity.heating_hp_bkup.energy_consumption").sum().alias("electricity.secondary_heating"),
-                    pl.col("out.electricity.cooling.energy_consumption").sum().alias("electricity.cooling"),
-                    pl.col("out.natural_gas.total.energy_consumption").sum().alias("natural_gas.total"),
-                    pl.col("out.natural_gas.heating.energy_consumption").sum().alias("natural_gas.heating")
-                ])
-            ).sort(["timestamp"])
+            # format dates
+            agg_bldg = cur_bldg.with_columns(pl.col("timestamp").dt.strftime("%Y-%m-%dT%H:%M:%S.%f").alias("timestamp")).select([
+                "bldg_id",
+                "timestamp",
+                pl.col("out.electricity.total.energy_consumption").alias("electricity.total"),
+                pl.col("out.electricity.heating.energy_consumption").alias("electrictiy.heating"),
+                pl.col("out.electricity.heating_hp_bkup.energy_consumption").alias("electricity.secondary_heating"),
+                pl.col("out.electricity.cooling.energy_consumption").alias("electricity.cooling"),
+                pl.col("out.natural_gas.total.energy_consumption").alias("natural_gas.total"),
+                pl.col("out.natural_gas.heating.energy_consumption").alias("natural_gas.heating")
+            ])
             if write:
                 if not os.path.exists(f"load_profiles/{state}"):
                     os.makedirs(f"load_profiles/{state}", exist_ok=True)

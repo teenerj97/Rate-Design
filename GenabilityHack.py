@@ -50,7 +50,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
             "keyName": "consumption",
             "unit": "kWh",
             "fromDateTime": building["timestamp"].first(),
-            "duration": 3600000, # 1 hour
+            "duration": 900000, # 15 mins
             "dataSeries": building["electricity.total"].to_list()
         }]
     }
