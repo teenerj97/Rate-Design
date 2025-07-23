@@ -1,0 +1,25 @@
+rateName,cost
+AGCE Adjustment,0.33522532
+Advanced Metering Infrastructure(AMI),49.27812204000001
+Basic Service Cost True Up Factor,51.45708662
+Customer Charge,120.0
+Distributed Solar (SMART),97.12265299902
+Distribution Energy Charge,1049.92570224
+Energy  Efficiency Reconciliation Factor,427.78455071786
+Exogenous Cost Adjustment,-0.67045064
+Generation Charge Basic Svc Fixed,2372.4306547416995
+Grid Modernization Factor,37.04239786
+LTRCA Adjustment,8.715858319999999
+Net Metering Recovery Surcharge,271.86773451999994
+Pension Adjustment,46.093481499999996
+Renewable Energy Charge,8.380633
+Residential Assistance Adjustment Factor,175.49045501999998
+Revenue Decoupling Adjustment Mechanism,-14.2470761
+SCRA Adjustment,142.470761
+Solar Expansion Cost Recovery Factor (SECRF),-5.19599246
+Solar Program Cost Adjustment Factor (SPCA),2.84941522
+System Benefits Charge,41.903165
+Tax Act Credit Factor (TACF),-13.91185078
+Transition Energy Charge,-15.9232027
+Transmission Charge,761.7995397
+Vegetation Management (RTWF),30.84072944

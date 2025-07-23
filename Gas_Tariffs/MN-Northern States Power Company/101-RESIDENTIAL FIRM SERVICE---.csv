@@ -1,0 +1,81 @@
+Component Description,EffDate,Category,Rate,Rate Determinant,Season,Percent,Location
+Base Cost of Gas,2024-01-01,,0.433904,per therm,04/01-10/31,,
+Base Cost of Gas,2024-11-01,,0.504674,per therm,11/01-03/31,,
+Conservation Improvement Program Adjustment,2024-12-01,,0.030554,per therm,"",,
+Cost of Gas PGA  Adjustment,2025-05-01,,-0.094334,per therm,"",,
+Distribution Charge,2024-01-01,,0.274927,per therm,"",,
+Gas Affordability Surcharge,2025-02-01,,0.00875,per therm,"",,
+Gas Utility Infrastructure Cost Adjustment,2024-03-01,,0.040548,per therm,"",,
+PGA True-up Factor,2024-09-01,,0.03377,per therm,"",,
+Pricing Event Surcharge,2023-01-01,,0.04219,per therm,"",,
+Revenue Decoupling Mechanism,2024-04-01,,0.017392,per therm,"",,
+New Area Surcharge and Extension Surcharge,2016-09-01,,13.5,per month,,,Pillager
+New Area Surcharge and Extension Surcharge,2016-09-01,,23.99,per month,,,Barnesville
+New Area Surcharge and Extension Surcharge,2016-09-01,,14.45,per month,,,Holdingford
+New Area Surcharge and Extension Surcharge,2016-09-01,,23.99,per month,,,Ulen-Hitterdal
+"Interim Rate Adjustment does not apply to:
+Purchased Gas Adjustment,
+Conservation Improvement Program Adjustment,
+Franchise Fees,
+New Area Surcharge and Extension Surcharge,
+Limited Firm Service,
+Daily Balancing Rider,
+End User Allocation Service Rider,
+State Energy Policy Rider,
+Gas Utility Infrastructure Cost Rider,
+Low Income Energy Discount Rider.",2022-01-01,Interim Rate Adjustment,,,,,
+Interim Rate Adjustment,2024-01-01,,,,,20.89,""
+Customer Charge,2022-01-01,,9.0,per month,"",,
+Franchise Fee,2024-10-01,,3.0,per month,,,Afton
+Franchise Fee,2015-02-01,,,"",,5.0,Barnesville
+Franchise Fee,2019-06-01,,2.0,per month,,,Baxter
+Franchise Fee,2014-01-01,,1.25,per month,,,Bayport
+Franchise Fee,2020-07-01,,4.0,per month,,,Big Lake
+Franchise Fee,2016-05-01,,4.0,per month,,,Centerville
+Franchise Fee,2009-06-01,,1.0,per month,,,Chisago City
+Franchise Fee,2023-11-01,,,"",,3.75,Cottage Grove
+Franchise Fee,2003-01-01,,0.0391,per therm,,,Delano
+Franchise Fee,2005-12-01,,,"",,3.0,East Grand Forks
+Franchise Fee,2018-10-01,,1.75,per month,,,Falcon Heights
+Franchise Fee,2022-04-01,,6.96,per month,,,Faribault
+Franchise Fee,2013-05-01,,3.0,per month,,,Forest Lake
+Franchise Fee,2006-07-01,,2.35,per month,,,Goodview
+Franchise Fee,2018-01-01,,2.0,per month,,,Inver Grove
+Franchise Fee,2014-04-01,,1.0,per month,,,Kandlyohi
+Franchise Fee,2019-05-01,,1.25,per month,,,Lake City
+Franchise Fee,2016-04-01,,2.0,per month,,,Lindstrom
+Franchise Fee,2018-11-01,,3.0,per month,,,Maplewood
+Franchise Fee,2020-01-01,,4.0,per month,,,Montrose
+Franchise Fee,2015-06-01,,,"",,5.0,Moorhead
+Franchise Fee,2022-01-01,,,"",,4.0,Mounds View
+Franchise Fee,2024-01-01,,2.75,per month,,,New Brighton
+Franchise Fee,2011-01-01,,1.0,per month,,,Newport
+Franchise Fee,2018-08-01,,2.0,per month,,,North Branch
+Franchise Fee,2019-03-01,,,"",,2.75,North St. Paul
+Franchise Fee,2021-03-01,,2.25,per month,,,Northfield
+Franchise Fee,2024-04-01,,,"",,3.0,Oakdale
+Franchise Fee,2021-04-30,,0.0,per month,,,Pequot Lakes
+Franchise Fee,2024-01-01,,4.25,per month,,,Sauk Rapids
+Franchise Fee,2017-02-01,,,"",,3.0,Shakopee
+Franchise Fee,2021-01-01,,2.25,per month,,,Shoreview
+Franchise Fee,2018-04-01,,,"",,5.0,South St. Paul
+Franchise Fee,2013-02-01,,0.5,per month,,,Spicer
+Franchise Fee,2010-06-01,,3.0,per month,,,St. Augusta
+Franchise Fee,2024-02-01,,2.0,per month,,,St. Joseph
+Franchise Fee,2005-08-01,,1.5,per month,,,St. Paul Park
+Franchise Fee,2015-06-01,,1.0,per month,,,Stillwater
+Franchise Fee,2025-04-01,,2.5,per month,,,Vadnais Heights
+Franchise Fee,2022-05-01,,1.0,per month,,,Wabasha
+Franchise Fee,2019-07-01,,,"",,3.0,West St. Paul
+Franchise Fee,2022-01-01,,1.75,per month,,,Woodbury
+Franchise Fee,2022-05-01,,1.5,per month,,,Wyoming
+Franchise Fee,2023-06-01,,1.85,per month,,,Eagan
+Franchise Fee,2024-01-01,,3.25,per month,,,Dundas
+Franchise Fee,2024-01-01,,2.0,per month,,,Grant
+Franchise Fee,2024-04-01,,1.75,per month,,,Little Canada
+Franchise Fee,2024-04-01,,2.0,per month,,,Mendota Heights
+Franchise Fee,2025-01-01,,2.0,per month,,,Foley
+Franchise Fee - all except Residential Heating Customers during months of Nov. to Apr.,2007-09-01,,,"",,3.0,St. Cloud
+Franchise Fee - Meter Factor (May - October),2024-11-01,,4.5,per month,,,St. Paul
+Franchise Fee - Residential Heating Customers during the months of Nov. to Apr.,2007-09-01,,,"",,1.5,St. Cloud
+Franchise Fee - Volume Factor (May - October),2024-11-01,,0.1397,per therm,,,St. Paul

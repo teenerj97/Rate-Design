@@ -1,0 +1,12 @@
+﻿masterTariffId,Rate,Bills,Customers,Sales,Revenues,From/To,Total Customers,Total Revenues
+698,Residential,13988502,1165709,8089806,"$1,295,489.00 ",From,1228829,1389685
+700,Residential - Electric Heat,530157,44180,404477,"$52,457.00 ",To,,
+3324564,Residential - Water Heating,523,44,160,$24.00 ,,,
+703,Residential - Time of Day,9787,816,8389,"$1,234.00 ",,,
+704,"Residential - Time of Day, Electric Heat",1137,95,1579,$94.00 ,,,
+708,Limited Off Peak Service - Residential,4360,363,2301,$252.00 ,,,
+707,"Residential - Non-Demand, Energy Controlled",41122,3427,37927,"$3,705.00 ",,,
+3354538,Residential Time of Use - Pilot Program,112474,9373,62064,"$10,138.00 ",,,
+3378760,Residential Electric Vehicle,23058,1922,138475,"$18,789.00 ",,,
+3316304,Residential Electric Vehicle Home Service,14162,1180,51855,"$5,838.00 ",,,
+3354537,Residential Electric Vehicle Subscription - Pilot Program,1536,128,23488,"$1,565.00 ",,,

@@ -1,0 +1,12 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+"Residential - Time of Day, Electric Heat",Affordability Surcharge,2025-01-01,1.95670389,per month,"","","","",""
+"Residential - Time of Day, Electric Heat",Conservation Improvement Program Adjustment,2025-01-01,-0.000389,per kwh,"","","","",""
+"Residential - Time of Day, Electric Heat",Customer Charge - Overhead,2025-01-01,5.99932796,per month,"","","","",""
+"Residential - Time of Day, Electric Heat",Fuel Cost Charge,2025-01-01,0.02616334,per kwh,"","","","",""
+"Residential - Time of Day, Electric Heat",Renewable Development Fund,2025-01-01,0.00121637,per kwh,"","","","",""
+"Residential - Time of Day, Electric Heat",Renewable Energy Standard Adjustment,2025-01-01,2.41,per month,"","","","",""
+"Residential - Time of Day, Electric Heat",Summer Off-Peak Rate,2025-01-01,0.05171,per kwh,"","",06/01-09/30,"[([1, 5], [21, 9]), ([6, 7], [0, 0])]",OFF_PEAK
+"Residential - Time of Day, Electric Heat",Summer On-Peak Rate,2025-01-01,0.25879,per kwh,"","",06/01-09/30,"[([1, 5], [9, 21])]",ON_PEAK
+"Residential - Time of Day, Electric Heat",Transmission Cost Recovery Charge,2025-01-01,0.00485492,per kwh,"","","","",""
+"Residential - Time of Day, Electric Heat",Winter Off-Peak Rate,2025-01-01,0.05171,per kwh,"","",10/01-05/31,"[([1, 5], [21, 9]), ([6, 7], [0, 0])]",OFF_PEAK
+"Residential - Time of Day, Electric Heat",Winter On-Peak Rate,2025-01-01,0.21408,per kwh,"","",10/01-05/31,"[([1, 5], [9, 21])]",ON_PEAK

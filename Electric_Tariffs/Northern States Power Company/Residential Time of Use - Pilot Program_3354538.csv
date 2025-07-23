@@ -1,0 +1,14 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+Residential Time of Use - Pilot Program,Affordability Surcharge,2024-01-01,1.95670389,per month,"","","","",""
+Residential Time of Use - Pilot Program,Conservation Improvement Program Adjustment,2024-01-01,-0.000389,per kwh,"","","","",""
+Residential Time of Use - Pilot Program,Customer Charge,2024-01-01,6.0,per month,"","","","",""
+Residential Time of Use - Pilot Program,Energy Charge - Summer Mid-Peak,2024-01-01,0.11307,per kwh,"","",06/01-09/30,"[([1, 5], [20, 0]), ([1, 5], [6, 15]), ([6, 7], [6, 0])]",PARTIAL_PEAK
+Residential Time of Use - Pilot Program,Energy Charge - Summer Off-Peak,2024-01-01,0.03825,per kwh,"","",06/01-09/30,"[([1, 5], [0, 6]), ([6, 7], [0, 6])]",OFF_PEAK
+Residential Time of Use - Pilot Program,Energy Charge - Summer On-Peak,2024-01-01,0.27845,per kwh,"","",06/01-09/30,"[([1, 5], [15, 20])]",ON_PEAK
+Residential Time of Use - Pilot Program,Energy Charge - Winter Mid-Peak,2024-01-01,0.09907,per kwh,"","",10/01-05/31,"[([1, 5], [20, 0]), ([1, 5], [6, 15]), ([6, 7], [6, 0])]",PARTIAL_PEAK
+Residential Time of Use - Pilot Program,Energy Charge - Winter Off-Peak,2024-01-01,0.03825,per kwh,"","",10/01-05/31,"[([1, 5], [0, 6]), ([6, 7], [0, 6])]",OFF_PEAK
+Residential Time of Use - Pilot Program,Energy Charge - Winter On-Peak,2024-01-01,0.24869,per kwh,"","",10/01-05/31,"[([1, 5], [15, 20])]",ON_PEAK
+Residential Time of Use - Pilot Program,Fuel Cost Charge,2024-01-01,0.02616334,per kwh,"","","","",""
+Residential Time of Use - Pilot Program,Renewable Development Fund,2024-01-01,0.00121637,per kwh,"","","","",""
+Residential Time of Use - Pilot Program,Renewable Energy Standard Adjustment,2024-01-01,2.41,per month,"","","","",""
+Residential Time of Use - Pilot Program,Transmission Cost Recovery Charge,2024-01-01,0.00485492,per kwh,"","","","",""

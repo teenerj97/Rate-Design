@@ -1,0 +1,10 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+Residential - Electric Heat,Affordability Surcharge,2025-01-01,25.43715053,per year,"","","","",""
+Residential - Electric Heat,Conservation Improvement Program Adjustment,2025-01-01,-0.0003890000000000001,per kwh,"","","","",""
+Residential - Electric Heat,Customer Charge,2025-01-01,6.0,per year,"","","","",""
+Residential - Electric Heat,Fuel Cost Charge,2025-01-01,0.026163341195935035,per kwh,"","","","",""
+Residential - Electric Heat,Renewable Development Fund,2025-01-01,0.0012163731629902,per kwh,"","","","",""
+Residential - Electric Heat,Renewable Energy Standard Adjustment,2025-01-01,2.41,per month,"","","","",""
+Residential - Electric Heat,Summer Rate,2025-01-01,0.13069,per kwh,"","",06/01-09/30,"",""
+Residential - Electric Heat,Transmission Cost Recovery Charge,2025-01-01,0.004854925591720619,per kwh,"","","","",""
+Residential - Electric Heat,Winter Rate,2025-01-01,0.08215,per kwh,"","",10/01-05/31,"",""

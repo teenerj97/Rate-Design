@@ -1,0 +1,7 @@
+Component Description,EffDate,Rate,Rate Determinant,Season
+Cost of Gas,2025-04-01,0.4242,per therm,""
+Distribution,2024-11-01,1.0926,per therm,""
+Distribution Adjustment,2025-05-01,1.2059,per therm,""
+Revenue Decoupling,2024-11-01,0.0579,per therm,11/01-04/30
+Revenue Decoupling,2025-05-01,0.0734,per therm,05/01-10/31
+Customer Charge,2021-11-01,9.75,per month,""

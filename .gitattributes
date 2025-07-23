@@ -1,0 +1,2 @@
+*.csv text eol=lf
+cleaned_resstock_data/full_data_with_utility.csv filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,28 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",California Climate Credit,2025-03-01,-116.46,per year,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Conservation Incentive Adjustment - Summer - Territory S,2025-03-01,-0.03568,per kwh,"",15,06/01-09/30,"",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Conservation Incentive Adjustment - Summer - Territory S,2025-03-01,0.06733,per kwh,15,"",06/01-09/30,"",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Conservation Incentive Adjustment - Winter - Territory S,2025-03-01,-0.03568,per kwh,"",10.2,10/01-05/31,"",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Conservation Incentive Adjustment - Winter - Territory S,2025-03-01,0.06733,per kwh,10.2,"",10/01-05/31,"",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Distribution Charge - Summer Off-Peak,2025-03-01,0.22233,per kwh,"","",06/01-09/30,"[([1, 7], [21, 16])]",OFF_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Distribution Charge - Summer Peak,2025-03-01,0.24233,per kwh,"","",06/01-09/30,"[([1, 7], [16, 21])]",ON_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Distribution Charge - Winter Off-Peak,2025-03-01,0.18489,per kwh,"","",10/01-05/31,"[([1, 7], [21, 16])]",OFF_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Distribution Charge - Winter Peak,2025-03-01,0.18821,per kwh,"","",10/01-05/31,"[([1, 7], [16, 21])]",ON_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Energy Cost Recovery Amount,2025-03-01,0.00001,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Energy Surcharge,2025-03-01,0.0003,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Energy Surcharge,2025-03-01,,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Generation Charge - Summer Off-Peak,2025-03-01,0.1317,per kwh,"","",06/01-09/30,"[([1, 7], [21, 16])]",OFF_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Generation Charge - Summer Peak,2025-03-01,0.2347,per kwh,"","",06/01-09/30,"[([1, 7], [16, 21])]",ON_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Generation Charge - Winter Off-Peak,2025-03-01,0.1373,per kwh,"","",10/01-05/31,"[([1, 7], [21, 16])]",OFF_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Generation Charge - Winter Peak,2025-03-01,0.16398,per kwh,"","",10/01-05/31,"[([1, 7], [16, 21])]",ON_PEAK
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",New System Generation,2025-03-01,0.00574,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Nuclear Decommissioning,2025-03-01,-0.00024,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Ongoing CTC,2025-03-01,-0.00072,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Public Purpose Programs,2025-03-01,0.02644,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Recovery Bond Charge,2025-03-01,0.00647,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Recovery Bond Credit,2025-03-01,-0.00647,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Reliability Services,2025-03-01,0.00032,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Transmission,2025-03-01,0.05122,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Transmission Rate Adjustments,2025-03-01,-0.01213,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Wildfire Fund Charge,2025-03-01,0.00595,per kwh,"","","","",""
+"Residential - Time of Use - Rate C, 4PM - 9PM (NEM 2)",Wildfire Hardening,2025-03-01,0.00474,per kwh,"","","","",""

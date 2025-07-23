@@ -1,0 +1,9 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+"Residential - Non-Demand, Energy Controlled",Affordability Surcharge,2025-01-01,1.95670389,per month,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Conservation Improvement Program Adjustment,2025-01-01,-0.000389,per kwh,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Customer Charge,2025-01-01,5.99932796,per month,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Energy Charge,2025-01-01,0.05933,per kwh,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Fuel Cost Charge,2025-01-01,0.02616334,per kwh,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Renewable Development Fund,2025-01-01,0.00121637,per kwh,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Renewable Energy Standard Adjustment,2025-01-01,2.41,per month,"","","","",""
+"Residential - Non-Demand, Energy Controlled",Transmission Cost Recovery Charge,2025-01-01,0.00485492,per kwh,"","","","",""

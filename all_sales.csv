@@ -1,0 +1,188 @@
+State,Utility,ResStock,Reported,weight Adjustment Factor,Only census?,Mismatch?
+AL,Alabama Power Co,16560633.0,17365016.0,1.05,Y+N,Nope
+AK,Alaska Electric Light & Power Co.,0.0,161849.0,0.0,Y,Mismatch too big
+AK,Alaska Power and Telephone Co,0.0,27163.0,0.0,Y,Mismatch too big
+AK,TDX North Slope Generating Co,0.0,0.0,0.0,Y,Mismatch too big
+AZ,"UNS Electric, Inc",1105525.0,1009273.0,0.91,Y+½N,Nope
+AZ,Ajo Improvement Co,0.0,5338.0,0.0,Y,Mismatch too big
+AZ,Arizona Public Service Co,26052046.0,14947956.0,0.57,Y,Mismatch too big
+AZ,Tucson Electric Power Co,3965532.5,3967416.0,1.0,Y,Nope
+AZ,Morenci Water and Electric,0.0,20438.0,0.0,Y,Mismatch too big
+AR,Entergy Arkansas LLC,6924479.5,7667932.0,1.11,Y+N,Nope
+AR,Empire District Electric Co,0.0,52635.0,0.0,Y,Mismatch too big
+AR,Oklahoma Gas & Electric Co,729863.06,711725.0,0.98,Y+½N,Nope
+AR,Southwestern Electric Power Co,1179757.2,1132224.0,0.96,Y+½N,Nope
+CA,Pacific Gas & Electric Co.,29215488.0,25637920.0,0.88,Y+½N,Nope
+CA,PacifiCorp,318274.03,386710.0,1.22,Y+N,Nope
+CA,Bear Valley Electric Service,0.0,87570.0,0.0,Y,Mismatch too big
+CA,Southern California Edison Co,36742960.0,25723128.0,0.7,Y,Nope
+CA,San Diego Gas & Electric Co,7027631.0,4861684.0,0.69,Y,Mismatch too big
+CA,Liberty Utilities,298759.2,308222.0,1.03,Y,Nope
+CO,"Black Hills Colorado Electric, LLC",567363.4,602501.0,1.06,Y+½N,Nope
+CO,Public Service Co of Colorado,9099547.0,9458383.0,1.04,Y+N,Nope
+CT,Connecticut Light & Power Co,8735767.0,9571442.0,1.1,Y+N,Nope
+CT,Farmington River Power Company,0.0,0.0,0.0,Y,Mismatch too big
+CT,United Illuminating Co,2342440.5,2041843.0,0.87,Y+½N,Nope
+DE,Delmarva Power,2864622.8,3026597.0,1.06,Y+N,Nope
+FL,Florida Power & Light Co,60941620.0,70005780.0,1.15,Y+N,Nope
+FL,Tampa Electric Co,7982407.0,10307159.0,1.29,Y+N,Nope
+FL,Florida Public Utilities Co,357007.7,300117.0,0.84,Y+N,Nope
+FL,"Duke Energy Florida, LLC",19413196.0,21750264.0,1.12,Y+N,Nope
+GA,Georgia Power Co,31540952.0,27622686.0,0.88,Y+N,Nope
+HI,Hawaiian Electric Co Inc,0.0,1540523.0,0.0,Y,Mismatch too big
+HI,Hawaii Electric Light Co Inc,0.0,425521.0,0.0,Y,Mismatch too big
+HI,Maui Electric Co Ltd,0.0,376039.0,0.0,Y,Mismatch too big
+ID,Avista Corp,1673262.9,1355765.0,0.81,Y+N,Nope
+ID,PacifiCorp,849228.4,817961.0,0.96,Y+N,Nope
+ID,Idaho Power Co,4886826.0,5712006.0,1.17,Y+N,Nope
+IL,Commonwealth Edison Co,23083874.0,26022564.0,1.13,Y+½N,Nope
+IL,Ameren Illinois Company,9992088.0,10617304.0,1.06,Y+½N,Nope
+IL,MidAmerican Energy Co,692331.5,630884.0,0.91,Y+N,Nope
+IL,Mt Carmel Public Utility Co,57518.76,44729.0,0.78,Y+N,Nope
+IN,Southern Indiana Gas & Elec Co,1247401.1,1335877.0,1.07,Y+½N,Nope
+IN,"Duke Energy Indiana, LLC",10176191.0,8610821.0,0.85,Y+N,Nope
+IN,Northern Indiana Pub Serv Co,2888742.2,3262923.0,1.13,Y+½N,Nope
+IN,Indiana Michigan Power Co,3842042.0,4070840.0,1.06,Y+½N,Nope
+IN,AES Indiana,5208742.5,4801479.0,0.92,Y,Nope
+IA,Interstate Power and Light Co,3415733.5,3586061.0,1.05,Y+½N,Nope
+IA,MidAmerican Energy Co,6521020.5,6071702.0,0.93,Y+N,Nope
+IA,Amana Society Service Co,0.0,6741.0,0.0,Y,Mismatch too big
+KS,"Evergy Kansas Central, Inc",0.0,3447298.0,0.0,Y,Mismatch too big
+KS,Empire District Electric Co,142850.27,104321.0,0.73,Y+N,Nope
+KS,Evergy Metro,2930906.8,2857073.0,0.97,Y+½N,Nope
+KS,"Evergy Kansas South, Inc",0.0,3161889.0,0.0,Y,Mismatch too big
+KY,Louisville Gas & Electric Co,3574761.2,3923114.0,1.1,Y,Nope
+KY,Duke Energy Kentucky,1488672.8,1408351.0,0.95,Y+½N,Nope
+KY,Kentucky Power Co,2416344.5,1755606.0,0.73,Y+N,Nope
+KY,Kentucky Utilities Co,4741682.5,5545728.0,1.17,Y+½N,Nope
+LA,Cleco Power LLC,2137976.5,3771793.0,1.76,Y+N,Mismatch too big
+LA,Southwestern Electric Power Co,2966894.2,2875733.0,0.97,Y+N,Nope
+LA,Entergy Louisiana LLC,18671602.0,14312847.0,0.77,Y+N,Nope
+LA,"Entergy New Orleans, LLC",2245130.8,2405914.0,1.07,Y,Nope
+ME,Central Maine Power Co,3853137.8,3849551.0,1.0,Y+N,Nope
+ME,Versant Power,1091408.6,871639.0,0.8,Y+N,Nope
+MD,The Potomac Edison Company,3298314.8,3204288.0,0.97,Y+N,Nope
+MD,Delmarva Power,2639864.0,2040164.0,0.77,Y+N,Nope
+MD,Baltimore Gas & Electric Co,13879564.0,12026017.0,0.87,Y+½N,Nope
+MD,Potomac Electric Power Co,6436096.5,5250188.0,0.82,Y+½N,Nope
+MA,Nantucket Electric Co,63011.2,122502.0,1.94,Y+N,Mismatch too big
+MA,Massachusetts Electric Co,4285486.0,7681861.0,1.79,Y+N,Mismatch too big
+MA,Fitchburg Gas & Elec Light Co,0.0,165309.0,0.0,Y,Mismatch too big
+MA,NSTAR Electric Company,6666346.0,7649725.0,1.15,Y,Nope
+MI,Consumers Energy Co - (MI),14749608.0,12207836.0,0.83,Y+N,Nope
+MI,Northern States Power Co,42533.613,55085.0,1.3,Y+½N,Nope
+MI,Upper Peninsula Power Company,257405.98,249255.0,0.97,Y+½N,Nope
+MI,DTE Electric Company,13251936.0,14451643.0,1.09,Y+½N,Nope
+MI,Indiana Michigan Power Co,1076446.0,1104472.0,1.03,Y+N,Nope
+MI,Alpena Power Co,90132.2,86730.0,0.96,Y+N,Nope
+MI,Upper Michigan Energy Resources Corp.,0.0,223690.0,0.0,Y,Mismatch too big
+MN,"Minnesota Power Enterprises, Inc.",995405.56,1004064.0,1.01,Y+½N,Nope
+MN,Otter Tail Power Co,0.0,537731.0,0.0,Y,Mismatch too big
+MN,Northern States Power Co - Minnesota,9549990.0,9056420.0,0.95,Y+½N,Nope
+MN,Northwestern Wisconsin Elec Co,0.0,494.0,0.0,Y,Mismatch too big
+MS,Mississippi Power Co,1948968.9,2092079.0,1.07,Y+N,Nope
+MS,Entergy Mississippi LLC,5631163.0,5493694.0,0.98,Y+N,Nope
+MO,Union Electric Co - (MO),16603008.0,12803699.0,0.77,Y+N,Nope
+MO,Empire District Electric Co,1753958.0,1692774.0,0.97,Y+½N,Nope
+MO,Evergy Metro,1768421.1,2645456.0,1.5,Y+N,Mismatch too big
+MO,Evergy Missouri West,3277677.2,3609581.0,1.1,Y+N,Nope
+MT,NorthWestern Energy LLC - (MT),2881515.2,2793132.0,0.97,Y+½N,Nope
+MT,Montana-Dakota Utilities Co,0.0,184041.0,0.0,Y,Mismatch too big
+MT,"Black Hills Power, Inc.",2413.1074,156.0,0.06,Y+½N,Mismatch too big
+MT,Avista Corp,0.0,203.0,0.0,Y,Mismatch too big
+NV,Nevada Power Co,9779185.0,9583914.0,0.98,Y+½N,Nope
+NV,Sierra Pacific Power Co,2453124.5,2655054.0,1.08,Y+½N,Nope
+NH,Liberty Utilities (Granite State Electri,351929.53,293038.0,0.83,Y+N,Nope
+NH,Unitil Energy Systems,531550.56,483973.0,0.91,Y+N,Nope
+NH,Public Service Co of NH,3974429.0,3271923.0,0.82,Y+N,Nope
+NJ,Atlantic City Electric Co,4228671.0,3941723.0,0.93,Y+½N,Nope
+NJ,Rockland Electric Co,0.0,684548.0,0.0,Y,Mismatch too big
+NJ,Jersey Central Power & Lt Co,9736507.0,9299901.0,0.96,Y+N,Nope
+NJ,Public Service Elec & Gas Co,14610496.0,13076477.0,0.9,Y+N,Nope
+NM,El Paso Electric Co,792696.9,837772.0,1.06,Y+½N,Nope
+NM,Public Service Co of NM,3342465.0,3390662.0,1.01,Y+½N,Nope
+NM,Southwestern Public Service Co,936623.06,1203792.0,1.29,Y+N,Nope
+NY,New York State Elec & Gas Corp,8628696.0,6797432.0,0.79,Y+N,Nope
+NY,Rochester Gas & Electric Corp,2641042.2,2799309.0,1.06,Y+½N,Nope
+NY,Orange & Rockland Utils Inc,906770.0,1606799.0,1.77,Y+N,Mismatch too big
+NY,Pennsylvania Electric Co,0.0,30496.0,0.0,Y,Mismatch too big
+NY,Niagara Mohawk Power Corp.,12362337.0,11718877.0,0.95,Y+N,Nope
+NY,Central Hudson Gas & Elec Corp,3066368.8,2095953.0,0.68,Y+N,Mismatch too big
+NY,Consolidated Edison Co-NY Inc,23001980.0,13614674.0,0.59,Y,Mismatch too big
+NY,Fishers Island Utility Co Inc,0.0,4499.0,0.0,Y,Mismatch too big
+NC,Virginia Electric & Power Co,959974.75,1508594.0,1.57,Y+N,Mismatch too big
+NC,Duke Energy Progress - (NC),15996534.0,15616376.0,0.98,Y+½N,Nope
+NC,"Duke Energy Carolinas, LLC",25312388.0,21363532.0,0.84,Y+N,Nope
+ND,Montana-Dakota Utilities Co,0.0,782159.0,0.0,Y,Mismatch too big
+ND,Northern States Power Co - Minnesota,1802196.6,768332.0,0.43,Y,Mismatch too big
+ND,Otter Tail Power Co,454090.47,598648.0,1.32,Y+N,Mismatch too big
+OH,Ohio Power Co,9548487.0,13439442.0,1.41,Y+N,Mismatch too big
+OH,Cleveland Electric Illum Co,0.0,5129345.0,0.0,Y,Mismatch too big
+OH,Dayton Power & Light Co,4242864.5,5002095.0,1.18,Y+½N,Nope
+OH,The Toledo Edison Co,2512723.8,2408467.0,0.96,Y+N,Nope
+OH,Duke Energy Ohio Inc,6043448.5,7158095.0,1.18,Y+½N,Nope
+OH,Ohio Edison Co,9940216.0,8887123.0,0.89,Y+N,Nope
+OK,Public Service Co of Oklahoma,6814372.0,6070994.0,0.89,Y+N,Nope
+OK,Empire District Electric Co,160155.28,49568.0,0.31,Y+½N,Mismatch too big
+OK,Oklahoma Gas & Electric Co,9803861.0,8892773.0,0.91,Y+½N,Nope
+OR,PacifiCorp,6303077.0,6007121.0,0.95,Y+½N,Nope
+OR,Idaho Power Co,0.0,190708.0,0.0,Y,Mismatch too big
+OR,Portland General Electric Co,5803191.0,7952312.0,1.37,Y+N,Mismatch too big
+PA,Pennsylvania Power Co,1114794.5,1558620.0,1.4,Y+N,Mismatch too big
+PA,Wellsborough Electric Co,0.0,41738.0,0.0,Y,Mismatch too big
+PA,Pennsylvania Electric Co,4368456.0,4134922.0,0.95,Y+½N,Nope
+PA,Duquesne Light Co,3405289.5,3764223.0,1.11,Y+½N,Nope
+PA,PECO Energy Co,11579696.0,13313739.0,1.15,Y+½N,Nope
+PA,Citizens Electric Co - (PA),0.0,82450.0,0.0,Y,Mismatch too big
+PA,West Penn Power Company,5316314.0,6768903.0,1.27,Y+N,Nope
+PA,PPL Electric Utilities Corp,17472386.0,13694419.0,0.78,Y+N,Nope
+PA,Metropolitan Edison Co,4551369.0,5490296.0,1.21,Y+N,Nope
+PA,Pike County Light & Power Co,0.0,32426.0,0.0,Y,Mismatch too big
+PA,"UGI Utilities, Inc",0.0,537077.0,0.0,Y,Mismatch too big
+RI,The Narragansett Electric Co,3095608.5,2909036.0,0.94,Y+N,Nope
+SC,"Duke Energy Carolinas, LLC",5595780.5,6728468.0,1.2,Y+½N,Nope
+SC,"Dominion Energy South Carolina, Inc",6819008.0,8048073.0,1.18,Y+½N,Nope
+SC,Lockhart Power Co,93104.09,61613.0,0.66,Y+½N,Mismatch too big
+SC,Duke Energy Progress - (NC),2121953.5,1933986.0,0.91,Y+N,Nope
+SD,MidAmerican Energy Co,0.0,56488.0,0.0,Y,Mismatch too big
+SD,NorthWestern Energy - (SD),725660.25,602945.0,0.83,Y+N,Nope
+SD,Otter Tail Power Co,67401.74,118430.0,1.76,Y+N,Mismatch too big
+SD,"Black Hills Power, Inc.",0.0,546151.0,0.0,Y,Mismatch too big
+SD,Northern States Power Co - Minnesota,0.0,844354.0,0.0,Y,Mismatch too big
+SD,Montana-Dakota Utilities Co,0.0,67132.0,0.0,Y,Mismatch too big
+TN,Entergy Arkansas LLC,0.0,25.0,0.0,Y,Mismatch too big
+TN,Kingsport Power Co,0.0,601847.0,0.0,Y,Mismatch too big
+TX,El Paso Electric Co,2708158.0,2657537.0,0.98,Y,Nope
+TX,Southwestern Public Service Co,1895685.9,2524471.0,1.33,Y+N,Mismatch too big
+TX,Entergy Texas Inc.,8363617.0,6785117.0,0.81,Y,Nope
+TX,Southwestern Electric Power Co,2450998.0,2129999.0,0.87,Y+N,Nope
+UT,PacifiCorp,8095608.5,8282116.0,1.02,Y+N,Nope
+VT,Green Mountain Power Corp,1857478.5,1556800.0,0.84,Y+N,Nope
+VA,Appalachian Power Co,4502614.5,5674429.0,1.26,Y+½N,Nope
+VA,Virginia Electric & Power Co,31501960.0,27195516.0,0.86,Y+N,Nope
+VA,Kentucky Utilities Co,340296.62,312763.0,0.92,Y+N,Nope
+WA,Avista Corp,2495818.5,2664362.0,1.07,Y+½N,Nope
+WA,PacifiCorp,1745940.0,1618257.0,0.93,Y+N,Nope
+WA,Puget Sound Energy Inc,10898353.0,11387970.0,1.04,Y+½N,Nope
+WV,The Potomac Edison Company,1847259.0,1857742.0,1.01,Y+N,Nope
+WV,Wheeling Power Co,478463.62,360996.0,0.75,Y+N,Nope
+WV,Black Diamond Power Co,0.0,32418.0,0.0,Y,Mismatch too big
+WV,Appalachian Power Co,5410808.5,4451267.0,0.82,Y+N,Nope
+WV,Monongahela Power Co,4332240.0,3446643.0,0.8,Y+N,Nope
+WI,Consolidated Water Power Co,0.0,670.0,0.0,Y,Mismatch too big
+WI,North Central Power Co Inc,66746.39,26032.0,0.39,Y+½N,Mismatch too big
+WI,Westfield Electric Company,0.0,4823.0,0.0,Y,Mismatch too big
+WI,Wisconsin Electric Power Co,7196536.5,7790977.0,1.08,Y+N,Nope
+WI,Northern States Power Co,1637296.5,1892820.0,1.16,Y+½N,Nope
+WI,Northwestern Wisconsin Elec Co,0.0,87065.0,0.0,Y,Mismatch too big
+WI,Pioneer Power and Light Co,0.0,13993.0,0.0,Y,Mismatch too big
+WI,Wisconsin Power & Light Co,2624880.8,3589536.0,1.37,Y+N,Mismatch too big
+WI,Dahlberg Light & Power Co,0.0,73642.0,0.0,Y,Mismatch too big
+WI,Wisconsin Public Service Corp,2442828.8,2952094.0,1.21,Y+½N,Nope
+WI,Madison Gas & Electric Co,1210593.4,871558.0,0.72,Y,Nope
+WI,Superior Water and Light Co,0.0,85036.0,0.0,Y,Mismatch too big
+WY,NorthWestern Energy LLC - (MT),0.0,2120.0,0.0,Y,Mismatch too big
+WY,Montana-Dakota Utilities Co,0.0,146874.0,0.0,Y,Mismatch too big
+WY,"Black Hills Power, Inc.",0.0,19530.0,0.0,Y,Mismatch too big
+WY,Cheyenne Light Fuel & Power,253668.48,268961.0,1.06,Y,Nope
+WY,PacifiCorp,1408146.4,1046604.0,0.74,Y+N,Nope

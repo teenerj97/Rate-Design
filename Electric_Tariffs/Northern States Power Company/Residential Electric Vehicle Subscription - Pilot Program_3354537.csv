@@ -1,0 +1,12 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+Residential Electric Vehicle Subscription - Pilot Program,Affordability Surcharge,2024-01-01,1.95670389,per month,"","","","",""
+Residential Electric Vehicle Subscription - Pilot Program,Conservation Improvement Program Adjustment,2024-01-01,-0.00038899999999999997,per kwh,"","","","",""
+Residential Electric Vehicle Subscription - Pilot Program,Customer Charge,2024-01-01,42.5,per month,"","","","",""
+Residential Electric Vehicle Subscription - Pilot Program,Excess Energy Charge - Summer On-Peak,2024-01-01,0.0,per kwh,"",340,06/01-09/30,"[([1, 5], [9, 21])]",ON_PEAK
+Residential Electric Vehicle Subscription - Pilot Program,Excess Energy Charge - Summer On-Peak,2024-01-01,0.25879,per kwh,340,"",06/01-09/30,"[([1, 5], [9, 21])]",ON_PEAK
+Residential Electric Vehicle Subscription - Pilot Program,Excess Energy Charge - Winter On-Peak,2024-01-01,0.0,per kwh,"",340,10/01-05/31,"[([1, 5], [9, 21])]",ON_PEAK
+Residential Electric Vehicle Subscription - Pilot Program,Excess Energy Charge - Winter On-Peak,2024-01-01,0.21408,per kwh,340,"",10/01-05/31,"[([1, 5], [9, 21])]",ON_PEAK
+Residential Electric Vehicle Subscription - Pilot Program,Fuel Cost Charge,2024-01-01,0.02616334,per kwh,"","","","",""
+Residential Electric Vehicle Subscription - Pilot Program,Renewable Development Fund,2024-01-01,0.00121637,per kwh,"","","","",""
+Residential Electric Vehicle Subscription - Pilot Program,Renewable Energy Standard Adjustment,2024-01-01,2.41,per month,"","","","",""
+Residential Electric Vehicle Subscription - Pilot Program,Transmission Cost Recovery Charge,2024-01-01,0.00485492,per kwh,"","","","",""

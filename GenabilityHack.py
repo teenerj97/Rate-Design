@@ -1,0 +1,299 @@
+from pathlib import Path
+import json
+curr = Path(__file__).resolve()
+for parent in curr.parents:
+    candidate = parent / "filepaths.json"
+    if candidate.exists():
+        with open(candidate) as f:
+            FILEPATHS = json.load(f)
+
+import os
+os.chdir(FILEPATHS["Bill Calculator"]["parent"])
+
+import requests
+import polars as pl
+from collections import defaultdict
+from datetime import datetime
+
+
+def get_tariff_gen(elecTariff, utility, zip_code, building):
+
+    app_id = "3df8e135-968d-4399-9879-2a1c6a3de30c"
+    app_key = "e51974c7-996b-4698-9628-71950d223364"
+
+    url = "https://api.genability.com/rest/public/territories"
+    params = {
+        "masterTariffId": elecTariff,
+        "zipCode": zip_code
+    }
+
+    response = requests.get(url, auth=(app_id, app_key), params=params).json()
+    territoryId = response["results"][0]["territoryId"] if len(response["results"])>0 else 0
+    territoryName = response["results"][0]["territoryName"] if territoryId else ""
+
+    search = f"{territoryName}_{elecTariff}" if territoryName else f"{elecTariff}"
+    for root,_,files in os.walk("Electric_Tariffs"):
+        for f in files:
+            if search in f:
+                df = pl.read_csv(os.path.join(root,f))
+                return df
+
+    
+    url = "https://api.genability.com/rest/v1/ondemand/calculate"
+    params = {
+        "masterTariffId": elecTariff,
+        "zipCode": zip_code,
+        "fromDateTime": building["timestamp"].first(),
+        "toDateTime": building["timestamp"].last(),
+        "groupBy": "YEAR",
+        "propertyInputs" : [{
+            "keyName": "consumption",
+            "unit": "kWh",
+            "fromDateTime": building["timestamp"].first(),
+            "duration": 3600000, # 1 hour
+            "dataSeries": building["electricity.total"].to_list()
+        }]
+    }
+    if territoryId:
+        params["propertyInputs"].append({"keyName": "territoryId", "dataValue": territoryId})
+
+    response = requests.post(url, auth=(app_id, app_key), json=params)
+    data = response.json()["results"][0]
+    tariff_name = data["tariffName"]
+    costs_breakdown = pl.from_dicts(response.json()["results"][0]["items"])
+    cols = ["rateName", "rateAmount", "itemQuantity","cost","period"] if "period" in costs_breakdown.columns else ["rateName", "itemQuantity", "rateAmount","cost"]
+    costs_breakdown = costs_breakdown.select(cols).sort("rateName")
+
+    url = "https://api.genability.com/rest/public/tariffs"
+
+    params = {
+        "masterTariffId": elecTariff,
+        "zipCode": zip_code,
+        "effectiveOn": datetime.now().strftime("%Y-%m-%d"),
+        "fromDateTime": building["timestamp"].first(),
+        "toDateTime": building["timestamp"].last(),
+        "populateRates": True
+    }
+
+    response = requests.get(url, auth=(app_id, app_key), params=params)
+    data = response.json()["results"][0]
+    rates = [r for r in data["rates"] if r["rateName"] in costs_breakdown["rateName"] and \
+            (any(c["rateAmount"]!=0 and c["itemQuantity"]!=0 for c in costs_breakdown.filter(pl.col("rateName")==r["rateName"]).to_dicts())) and \
+            r.get("territory",{"territoryId":territoryId})["territoryId"]==territoryId]
+    
+    # Update the logic with rate determinant, seasonal, time of use, and block handling
+    rows = []
+    for rate in rates:
+        rate_name = rate["rateName"]
+        eff_date = rate["fromDateTime"].split("T")[0]
+        
+        # Rate Determinant logic
+        if rate.get("chargeType") == "FIXED_PRICE" and \
+                any(c>=0 for c in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["rateAmount"]) and \
+                any(q==12 or q==13 for q in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["itemQuantity"]) or \
+                (rate["rateBands"] or [{1:""}])[0].get("rateUnit")=="PERCENTAGE":
+            rate_determinant = "per month"
+        elif rate.get("chargeType") == "FIXED_PRICE" and any(q<12 and q==round(q) for q in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["itemQuantity"]):
+            rate_determinant = "per year"
+        else:
+            rate_determinant = "per kwh"
+        
+        # Season Logic
+        season = ""
+        if rate.get("season",rate.get("timeOfUse",{}).get("season")):
+            s = rate.get("season",rate.get("timeOfUse",{}).get("season"))
+            season = f'{s["seasonFromMonth"]:02d}/{s["seasonFromDay"]:02d}-{s["seasonToMonth"]:02d}/{s["seasonToDay"]:02d}'
+        
+        # Time of Use Logic
+        tou_type = ""
+        tou = ""
+        if "timeOfUse" in rate:
+            tou=[]
+            for p in rate["timeOfUse"]["touPeriods"]:
+                tou.append(([p["fromDayOfWeek"]+1,p["toDayOfWeek"]+1],[p["fromHour"], p["toHour"]]))
+            tou = str(tou)
+            tou_type = rate["timeOfUse"].get("touType", "OFF_PEAK")
+        
+        # Block Logic
+        bands = rate.get("rateBands", [])
+        has_cons_limits = any(b.get("hasConsumptionLimit") for b in bands)
+        if not has_cons_limits or len(bands) == 1:
+            rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, "", "", season, tou, tou_type])
+        else:
+            limits = [b.get("consumptionUpperLimit") for b in bands]
+            prev_limit = None
+            for i, limit in enumerate(limits):
+                if limit == prev_limit:
+                    continue  # skip dupes
+                start = "" if i == 0 else prev_limit
+                end = limit if limit is not None else ""
+                rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, start, end, season, tou, tou_type])
+                prev_limit = limit
+
+    df = pl.DataFrame(rows, schema=[
+        "tariff","rateName", "EffDate", "Rate", "Rate Determinant",
+        "Start", "End", "Season", "tou", "period"
+    ], orient="row")
+
+    # group df by rateName
+    df_grouped = df.group_by("rateName","Start","End","Rate Determinant",maintain_order=True).agg(pl.len().alias("df_count"))
+    cb_grouped = costs_breakdown.group_by("rateName",maintain_order=True).agg([
+        pl.len().alias("cb_count"),
+        (pl.col("rateAmount") * pl.col("itemQuantity")).sum().alias("weighted_sum"),
+        pl.col("itemQuantity").sum().alias("total_qty"),
+        pl.col("rateAmount").alias("rate_list")  # keep for ordered match
+    ])
+
+    # join stats
+    summary = df_grouped.join(cb_grouped, on="rateName", how="left")
+
+    # result mapping: rateName -> list of final rates
+    rate_map = {}
+    for row in summary.iter_rows(named=True):
+        name = row["rateName"]
+        dcount = row["df_count"]
+        ccount = row["cb_count"]
+        factor = row["total_qty"] if row["Rate Determinant"]=="per year" else 1
+
+        if ccount == 1 and dcount > 1:
+            # broadcast single rate
+            val = factor * row["rate_list"][0]
+            rate_map[name] = [val] * dcount
+
+        elif dcount == 1:
+            # assign weighted avg
+            avg = factor * row["weighted_sum"] / row["total_qty"] if row["total_qty"] else 0
+            rate_map[name] = [avg]
+
+        elif ccount == dcount:
+            # respect order
+            rate_map[name] = [r*factor for r in row["rate_list"]]
+        
+        else:
+            # mismatch, fallback: NaNs
+            rate_map[name] = [None] * dcount
+
+    final_rates = []
+    group_counts = {}
+
+    for name in df["rateName"]:
+        from_tariff = [band["rateAmount"] * (-1 if band["isCredit"] else 1) if band["rateAmount"] else 0 for r in rates if r["rateName"]==name for band in r["rateBands"]]
+        if name not in group_counts:
+            group_counts[name] = 0
+        idx = group_counts[name]
+        if any([c!=0 for c in from_tariff]):
+            val_list=from_tariff
+        else:
+            val_list = rate_map.get(name, [])
+        val = val_list[idx] if idx < len(val_list) else None
+        final_rates.append(val)
+        group_counts[name] += 1
+
+    df = df.with_columns(pl.Series("Rate", final_rates)).sort("rateName")
+    
+    if not os.path.exists(f"Electric_Tariffs/{utility}"):
+        os.makedirs(f"Electric_Tariffs/{utility}", exist_ok=True)
+
+    name = f"{tariff_name}_{territoryName}_{elecTariff}" if territoryName else f"{tariff_name}_{elecTariff}"
+    df.write_csv(f"Electric_Tariffs/{utility}/{name}.csv")
+
+    return df
+
+
+def calculate_bill_electric(df, building):
+    
+    # Drop rows with null Rate
+    df = df.filter(pl.col("Rate").is_not_null())
+
+    # Prepare load data with month, hour, and date columns
+    building = building.with_columns([
+        pl.col("timestamp").str.to_datetime().alias("timestamp")
+    ])
+    building = building.with_columns([
+        pl.col("timestamp").dt.month().alias("month"),
+        pl.col("timestamp").dt.hour().alias("hour"),
+        pl.col("timestamp").dt.date().alias("date"),
+    pl.col("timestamp").dt.weekday().alias("weekday")
+    ])
+
+    # Initialize charges
+    total_charges = defaultdict(float)
+
+    # Convert rate table to row-wise dict for iteration
+    for row in df.iter_rows(named=True):
+        name = row["rateName"]
+        rate = row["Rate"]
+        determinant = str(row["Rate Determinant"]).lower()
+        season = row["Season"]
+        tou = row["tou"]
+        start = float(row["Start"]) if row["Start"] else 0.0
+        end = float(row["End"]) if row["End"] else float("inf")
+
+        # Get season months
+        if isinstance(season, str) and "/" in season:
+            mo1, day1 = map(int, season.split("-")[0].split("/"))
+            mo2, day2 = map(int, season.split("-")[1].split("/"))
+            season_months = list(range(mo1, mo2 + 1)) if mo1 <= mo2 else list(range(mo1, 13)) + list(range(1, mo2 + 1))
+        else:
+            season_months = list(range(1, 13))
+
+        # Filter load for season
+        building_filter = building.filter(pl.col("month").is_in(season_months))
+
+        if "kwh" in determinant:
+            # Filter for TOU if applicable
+            if tou:
+                temp = []
+                tou = eval(tou)
+                for t_d, t_h in tou:
+                    start_day, end_day = t_d
+                    start_time, end_time = t_h
+                    if start_time < end_time:
+                        temp.append(building_filter.filter((pl.col("hour") >= start_time) & (pl.col("hour") < end_time) &
+                                                        (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
+                    else:
+                        temp.append(building_filter.filter(((pl.col("hour") >= start_time) | (pl.col("hour") < end_time)) &
+                                                        (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
+                building_filter = pl.concat(temp)
+                
+            # Compute monthly totals
+            building_filter_monthly_total = (
+                building_filter.group_by("month")
+                .agg(pl.col("electricity.total").sum().alias("month_total"))
+            )
+            building_filter = building_filter.join(building_filter_monthly_total, on="month")
+            
+            # Consumption limit handling
+            building_filter = building_filter.with_columns([
+                pl.when(pl.col("month_total") > start)
+                .then(
+                    pl.when(pl.col("month_total") > end)
+                        .then(end - start)
+                        .otherwise(pl.col("month_total") - start)
+                )
+                .otherwise(1)
+                .alias("adjusted_kwh_factor")
+            ])
+
+            building_filter = building_filter.with_columns([
+                (pl.col("electricity.total") * pl.col("adjusted_kwh_factor") / pl.col("month_total"))
+                .fill_nan(0)
+                .alias("adjusted_kwh")
+            ])
+
+            kwh = building_filter["adjusted_kwh"].sum()
+            charge = rate * kwh
+            total_charges[name] += charge
+
+        elif "month" in determinant or "bill" in determinant:
+            months = building_filter["month"].n_unique()
+            total_charges[name] += rate * months
+
+        elif "day" in determinant:
+            days = building_filter["date"].n_unique()
+            total_charges[name] += rate * days
+
+        elif "year" in determinant:
+            total_charges[name] += rate
+
+    return total_charges

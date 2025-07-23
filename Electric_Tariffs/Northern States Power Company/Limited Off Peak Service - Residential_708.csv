@@ -1,0 +1,9 @@
+tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
+Limited Off Peak Service - Residential,Affordability Surcharge,2025-01-01,1.95670389,per month,"","","","",""
+Limited Off Peak Service - Residential,Conservation Improvement Program Adjustment,2025-01-01,-0.000389,per kwh,"","","","",""
+Limited Off Peak Service - Residential,Customer Charge,2025-01-01,5.99932796,per month,"","","","",""
+Limited Off Peak Service - Residential,Energy Charge,2025-01-01,0.04656,per kwh,"","","","[([1, 7], [22, 6])]",OFF_PEAK
+Limited Off Peak Service - Residential,Fuel Cost Charge,2025-01-01,0.02616334,per kwh,"","","","",""
+Limited Off Peak Service - Residential,Renewable Development Fund,2025-01-01,0.00121637,per kwh,"","","","",""
+Limited Off Peak Service - Residential,Renewable Energy Standard Adjustment,2025-01-01,2.41,per month,"","","","",""
+Limited Off Peak Service - Residential,Transmission Cost Recovery Charge,2025-01-01,0.00485492,per kwh,"","","","",""
