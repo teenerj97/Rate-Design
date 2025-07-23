@@ -170,14 +170,16 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
         - If `upgrades` is specified, the function will also fetch and calculate costs for the upgradesd
             load profiles, returning both base and upgradesd bills.
     """
-    if any(v for k,v in kwargs.items()) and state and utility:
+    if state and utility:
         filtering = None
         for col_name, value in kwargs.items():
             if value:
                 condition = pl.col(col_name) == value
                 filtering = condition if filtering is None else (filtering & condition)
         try:
-            chosen_segment = segment(state, utility, gas_utility, kwargs).filter(filtering)
+            chosen_segment = segment(state, utility, gas_utility, kwargs)
+            if filtering is not None:
+                chosen_segment = chosen_segment.filter(filtering)
         except Exception as e:
             print(f"Segment entries or utility name led to an error, check them based on allowed options\n{e}")
             return

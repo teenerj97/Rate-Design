@@ -64,14 +64,22 @@ def segment(state, utility, gas_utility, kwargs):
 
     seg_cols = [seg for seg, val in kwargs.items() if val]
 
-    segments = df_util.group_by(seg_cols).agg([
+    if seg_cols:
+        segments = df_util.group_by(seg_cols).agg([
             pl.len().alias("count"),
             pl.col("bldg_id").cast(str).map_elements(lambda ids: "|".join(ids)).alias("bldg_ids"),
             pl.col("in.zip_code").cast(str).map_elements(lambda zips: "|".join([z if len(z)==5 else "0"+z for z in zips])).alias("zip_codes"),
             pl.col("elec_weight").cast(str).map_elements(lambda weight: "|".join(weight)).alias("elec_weights"),
             pl.col("gas_weight").cast(str).map_elements(lambda weight: "|".join(weight)).alias("gas_weights")
         ]).sort(seg_cols)
-
+    else:
+        segments = df_util.select([
+            pl.len().alias("count"),
+            pl.col("bldg_id").cast(str).map_elements(lambda ids: "|".join(ids)).alias("bldg_ids"),
+            pl.col("in.zip_code").cast(str).map_elements(lambda zips: "|".join([z if len(z)==5 else "0"+z for z in zips])).alias("zip_codes"),
+            pl.col("elec_weight").cast(str).map_elements(lambda weight: "|".join(weight)).alias("elec_weights"),
+            pl.col("gas_weight").cast(str).map_elements(lambda weight: "|".join(weight)).alias("gas_weights")
+        ])
     segments.write_csv(f"segments_by_utility/{utility} x {gas_utility}.csv")
 
     return segments
