@@ -9,7 +9,7 @@ for parent in curr.parents:
 
 import os
 os.chdir(FILEPATHS["Bill Calculator"]["parent"])
-
+#
 import requests
 import polars as pl
 from collections import defaultdict
