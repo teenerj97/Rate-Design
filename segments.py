@@ -75,10 +75,10 @@ def segment(state, utility, gas_utility, kwargs):
     else:
         segments = df_util.select([
             pl.len().alias("count"),
-            pl.col("bldg_id").cast(str).map_elements(lambda ids: "|".join(ids)).alias("bldg_ids"),
-            pl.col("in.zip_code").cast(str).map_elements(lambda zips: "|".join([z if len(z)==5 else "0"+z for z in zips])).alias("zip_codes"),
-            pl.col("elec_weight").cast(str).map_elements(lambda weight: "|".join(weight)).alias("elec_weights"),
-            pl.col("gas_weight").cast(str).map_elements(lambda weight: "|".join(weight)).alias("gas_weights")
+            pl.col("bldg_id").cast(str).implode().map_elements(lambda ids: "|".join(ids)).alias("bldg_ids"),
+            pl.col("in.zip_code").cast(str).implode().map_elements(lambda zips: "|".join([z if len(z)==5 else "0"+z for z in zips])).alias("zip_codes"),
+            pl.col("elec_weight").cast(str).implode().map_elements(lambda weight: "|".join(weight)).alias("elec_weights"),
+            pl.col("gas_weight").cast(str).implode().map_elements(lambda weight: "|".join(weight)).alias("gas_weights")
         ])
     segments.write_csv(f"segments_by_utility/{utility} x {gas_utility}.csv")
 
@@ -90,8 +90,8 @@ if __name__=="__main__":
     utility = "Northern States Power Co - Minnesota"  # or any utility you're filtering for
     gas_utility = "Northern States Power Company - XcelEnergy"
     segment(state,utility,gas_utility,{
-        "heating_type":"Natural Gas",
-        "building_type":"SF",
+        "heating_type":"",
+        "building_type":"",
         "area":"",
         "income":"",
         "vintage":"",
