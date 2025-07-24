@@ -1,0 +1,203 @@
+Area,Company,Sales
+CA,Southern California Gas Company,228230399
+IL,Northern Illinois Gas Co,202391103
+CA,Pacific Gas And Electric Company,188426275
+MI,Consumers Energy Company,141491305
+NJ,Public Service Electric & Gas Co,131124750
+NY,The Brooklyn Union Gas Co,112894140
+GA,Atlanta Gas Lt Co,106568584
+MI,Dte Gas Company,104518213
+OH,East Ohio Gas Comp,99035529
+CO,Pub Service Co Of Colorado,97533548
+OH,Columbia Gas Of Ohio,95082922
+NY,Consolidated Edison New York Inc,90499647
+TX,Atmos Energy,89042466
+IL,Peoples Gas Light And Coke Company,86951093
+UT,Questar Gas Company,81933622
+MO,Spire Missouri Inc,74581744
+MN,Centerpoint Energy,67154566
+TX,Centerpoint Energy Entex,60609928
+MA,Boston Gas Co,59182509
+WA,Puget Sound Energy,58763500
+IN,Northern Indiana Public Service Co,57275924
+NY,Keyspan Gas East,52163259
+OK,Oklahoma Natural Gas Co,51679355
+PA,Peoples Twp Llc,49541495
+NY,National Fuel Gas Distribution Ny,47114400
+NY,Niagara Mohawk Power,46981685
+IL,Ameren Illinois,45164261
+PA,Ugi Utilities,44808774
+WI,Wisconsin Gas Company,41764318
+NJ,New Jersey Natural Gas,41509909
+KS,Kansas Gas Service Company,39176394
+NV,Southwest Gas Corporation,38894809
+IN,Indiana Gas Company Inc,38240042
+OR,Northwest Natural Gas Co,37137873
+PA,Peco Energy Company,35842065
+MN,Northern States Pwr Co,35470580
+MD,Washington Gas Light Company,35109132
+VA,Washington Gas Light Company,35008386
+IA,Midamerican Energy Company,34644094
+AZ,Southwest Gas Corporation,33932905
+MD,Baltimore Gas And Electric,33294360
+NC,Piedmont Natural Gas,32925352
+WI,Wisconsin Elec Pwr Co,32481735
+NM,New Mexico Gas Company,31314680
+CA,San Diego Gas And Electric Company,29651271
+PA,Philadelphia Gas Works,29333158
+ID,Intermountian Gas Company,28871897
+PA,Columbia Gas Of Pennsylvania,28161963
+OH,Duke Energy Ohio,27965448
+NC,Public Svc Co Of North Carolina,27035591
+NY,Rochester Gas And Elec Corp,24083664
+MI,Semco Energy,23577803
+WI,Wisconsin Public Service Corp,22793842
+NJ,South Jersey Gas Company,22184009
+TX,Texas Gas Service,21530581
+NJ,Elizabethtown Gas,21036949
+NY,New York State Elec And Gas Corp,20376873
+AK,Enstar Nat Gas,20205013
+OH,Vectren Energy Delivery Of Ohio,18979605
+MA,Nstar Gas Company,18640289
+IL,North Shore Gas Company,18355884
+CO,Black Hills Energy,17959184
+MN,Mn Energy Res Corp,17665317
+RI,The Narragansett Elec Co,17238850
+IN,Citizens Gas,17201314
+AR,Summit Utilities Arkansas Inc,17193986
+CT,Connecticut Nat Gas Corp,16773123
+NE,Black Hills Energy,16456705
+KY,Louisville Gas And Electric Co,15636807
+CT,Southern Connecticut Gas Company,15057566
+CT,Yankee Gas Svc Co,14605951
+MT,Northwestern Energy,14009430
+SC,Dominion Energy South Carolina Inc,13269458
+VA,Columbia Gas Of Virginia,13221064
+VA,Virginia Gas Distribution,13142927
+NY,Orange & Rockland Utilities Inc,12548719
+MI,Michigan Gas Utilities Co,12369728
+IA,Interstate Power And Light Company,12271807
+WV,Mountaineer Gas Co,12104228
+WI,Wisconsin Power And Light Company,12104102
+NV,Sierra Pacific Power Company,11714737
+WA,Cascade Nat Gas Corp,11509309
+WI,Madison Gas Elec Co,11136248
+CA,Southwest Gas Corporation,10953467
+WA,Avista Corporation,10843000
+MS,Atmos Energy,10625448
+LA,Atmos Energy,10546392
+DC,Washington Gas Light Company,10259601
+TN,Piedmont Natural Gas,10116767
+IA,Black Hills Energy,9702465
+FL,Peoples Gas Sys,9659803
+KS,Atmos Energy,9505534
+AR,Black Hills Energy,9445904
+AZ,Uns Gas Inc,8900882
+WY,Black Hills Energy,8836689
+LA,Centerpoint Energy Entex,8679440
+ND,Montana Dakota Utilities Co,8624890
+KY,Atmos Energy,8150378
+CO,Atmos Energy,8118878
+DE,Delmarva Power And Light Co,7556674
+WV,Hope Gas Inc,7414112
+TN,Atmos Energy,7347013
+SC,Piedmont Natural Gas,6854354
+WI,Northern States Pwr Co,6468007
+KS,Black Hills Energy,6441462
+MT,Montana Dakota Utilities Co,5826547
+SD,Midamerican Energy Company,5811064
+ID,Avista Corporation,5540316
+NH,Liberty Utilities Dba Energy North N,5371384
+WA,Northwest Natural Gas Co,5201585
+KY,Duke Energy Kentucky,5187460
+IN,Southern Indiana Gas And Electric,5181807
+NY,Central Hudson Gas & Electric,5039025
+OR,Avista Corporation,5034612
+OR,Cascade Nat Gas Corp,4688719
+MS,Centerpoint Energy Entex,4637994
+OK,Summit Utilities Oklahoma Inc,4499935
+IL,Midamerican Energy Company,4307074
+ND,Northern States Pwr Co,4105281
+SD,Montana Dakota Utilities Co,3757486
+VT,Vermont Gas Systems Inc,3648922
+OH,Ohio Gas Company,3588375
+DE,Chesapeake Utilities Corporation,3299834
+SD,Northwestern Energy,3179427
+LA,Entergy Louisiana Llc,3158361
+TN,Chattanooga Gas Co,3066653
+VA,Roanoke Gas Company,2969989
+LA,Entergy New Orleans Inc,2853587
+MA,Berkshire Gas Company The,2822250
+NE,Northwestern Energy,2580947
+OH,Northeast Ohio Natural Gas,2460805
+OH,National Gas And Oil Cooperative,2241861
+KS,Midwest Energy Inc,2200005
+WY,Questar Gas Company,2190366
+MO,Empire District Gas,2136805
+AL,Spire Gulf Inc,2093329
+AR,Arkansas Oklahoma Gas Corporation,2042002
+MD,Columbia Gas Of Maryland,2009333
+FL,Florida Public Utilities,1762554
+CO,Colorado Natural Gas Inc,1751069
+NH,Northern Utilities Inc,1674238
+IN,Ohio Valley Gas Corp,1634304
+FL,Florida City Gas,1576041
+KY,Delta Natural Gas Company,1552081
+WY,Montana Dakota Utilities Co,1513465
+MN,Great Plains Natural Gas Co,1462264
+OH,Suburban Natural Gas Company,1379143
+MI,Citizens Gas Fuel Co,1281951
+WI,Midwest Natural Gas Inc,1252362
+NY,Corning Nat Gas Corp,1210534
+IL,Liberty Utility Midstates Co,1109875
+TX,Universal Natural Gas Inc,1098129
+TX,West Texas Gas Inc,1014266
+VA,Atmos Energy,996588
+MA,Fitchburg Gas And Electric Company,926187
+WI,Superior Water Light And Power Co,917680
+MI,Presque Isle E And G Coop,856058
+ME,Bangor Gas Company Llc,761413
+MO,Summit Natural Gas,728382
+WI,St Croix Valley Nat Gas Inc,655068
+IN,Midwest Natural Gas,640279
+OH,Eastern Natural Gas,628679
+TX,Summit Utilities Arkansas Inc,553638
+IL,Illinois Gas Company,515379
+TN,Somerville Town Of,500339
+MD,Chesapeake Utilities Corporation,487916
+WY,Wyoming Gas Co,479044
+OK,Arkansas Oklahoma Gas Corporation,433284
+MI,Northern States Pwr Co,432564
+OH,Pike Natural Gas Co,383745
+ME,Maine Natural Gas Corp,382697
+IN,Indiana Natural Gas Corp,350366
+IN,Community Natural Gas Co Inc,337517
+WV,Union Oil And Gas Inc,319525
+IN,Sycamore Gas Co,302966
+ME,Summit Natural Gas,302154
+MD,Elkton Gas Company,259094
+NE,Midamerican Energy Company,247561
+OH,Glenwood Energy Of Oxford Inc,217593
+WV,Cardinal Bluefield Gas Co,199173
+OK,West Texas Gas Inc,188087
+IL,Mt Carmel Public Utility Co,173668
+OH,Ohio Cumberland Gas Co,163394
+ID,Questar Gas Company,160237
+ND,Great Plains Natural Gas Co,155402
+NC,Frontier Natural Gas Co,141442
+GA,Elberton Utilities  Nat Gas Div,138435
+OH,Arlington Nat Gas Co,114096
+PA,Pike County Light And Power,94429
+AL,Wheeler Basin Natural Gas Co,93142
+NY,Reserve Gas Company Inc,65304
+WV,Canaan Valley Gas Company,51540
+FL,St Joe Nat Gas Co,41854
+OH,Ohio Valley Gas Corp,39571
+OH,Foraker Gas Co  Inc,33841
+MD,Ugi Central Penn Gas Inc,29429
+TX,Gary Natural Gas System,28935
+MT,Energy West West Yellowstone,22456
+MS,Mississippi Natural Inc,14129
+LA,Delcambre Town Of,6690
+TX,Corix Utilities Inc,5963
+TX,Woodsboro Natural Gas,3641

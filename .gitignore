@@ -1,4 +1,8 @@
 cleaned_resstock_data/*
 !cleaned_resstock_data/full_data_with_utility.csv
+!cleaned_resstock_data/gas_sales_data.csv
+!cleaned_resstock_data/gas_sales_orig.csv
+!cleaned_resstock_data/sales_data.csv
+!cleaned_resstock_data/sales_data.xlsx
 filepaths.json
 README.md
