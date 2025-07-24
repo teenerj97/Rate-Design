@@ -225,7 +225,7 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
     annual_gas_bill = []
     
     for upgrade,building in buildings:
-        if upgrade in [0,16] and "Gas" in kwargs["heating_type"]:
+        if (upgrade in [0,16] and "Gas" in kwargs["heating_type"]) or len(gasTariff)==1:
             gasTariff_sub = gasTariff[0]
         else:
             gasTariff_sub = gasTariff[1]

@@ -184,7 +184,7 @@ def genability_costs_hack(elecTariffs, gasTariff, state, utility, gas_utility=""
     gas_bills_distribution = []
     
     for upgrade,building in buildings:
-        if upgrade in [0,16] and "Gas" in kwargs["heating_type"]:
+        if (upgrade in [0,16] and "Gas" in kwargs["heating_type"]) or len(gasTariff)==1:
             gasTariff_sub = gasTariff[0]
         else:
             gasTariff_sub = gasTariff[1]

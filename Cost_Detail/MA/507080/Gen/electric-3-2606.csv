@@ -1,0 +1,25 @@
+rateName,rateAmount,itemQuantity,cost,name
+Generation Charge Basic Svc Fixed,0.14234377,7122.399,1013.82912209,Residential
+Customer Charge,9.99943996,12.0,119.99327957,Residential
+Energy  Efficiency Reconciliation Factor,0.026146,7122.399,186.22223134,Residential
+Renewable Energy Charge,0.0005,7122.399,3.5611995,Residential
+Basic Service Cost True Up Factor,0.00307,7122.399,21.86576493,Residential
+Distribution Energy Charge,0.06264,7122.399,446.14707336,Residential
+Exogenous Cost Adjustment,-0.00004,7122.399,-0.28489596,Residential
+LTRCA Adjustment,0.00052,7122.399,3.70364748,Residential
+Pension Adjustment,0.00275,7122.399,19.58659725,Residential
+SCRA Adjustment,0.0085,7122.399,60.5403915,Residential
+Transmission Charge,0.04545,7122.399,323.71303455,Residential
+AGCE Adjustment,0.00002,7122.399,0.14244798,Residential
+Residential Assistance Adjustment Factor,0.01047,7122.399,74.57151753,Residential
+System Benefits Charge,0.0025,7122.399,17.8059975,Residential
+Grid Modernization Factor,0.00221,7122.399,15.74050179,Residential
+Net Metering Recovery Surcharge,0.01622,7122.399,115.52531178,Residential
+Solar Expansion Cost Recovery Factor (SECRF),-0.00031,7122.399,-2.20794369,Residential
+Solar Program Cost Adjustment Factor (SPCA),0.00017,7122.399,1.21080783,Residential
+Tax Act Credit Factor (TACF),-0.00083,7122.399,-5.91159117,Residential
+Vegetation Management (RTWF),0.00184,7122.399,13.10521416,Residential
+Revenue Decoupling Adjustment Mechanism,-0.00085,7122.399,-6.05403915,Residential
+Distributed Solar (SMART),0.00560638,7122.399,39.93085695,Residential
+Transition Energy Charge,-0.00095,7122.399,-6.76627905,Residential
+Advanced Metering Infrastructure(AMI),0.00294,7122.399,20.93985306,Residential
