@@ -58,7 +58,7 @@ def get_load_profiles(state, ids, upgrade=0, write=True):
 
     pbar = tqdm(ids)
     for id in pbar:
-        pbar.set_description(f"Downloading load profiles for upgrade {upgrade}")
+        pbar.set_description(f"Downloading load profiles for upgrade {upgrade}, approx {int(len(ids)/60/2)}-{int(len(ids)/60)}mins")
 
         if os.path.exists(f"load_profiles/{state}/{id}-{upgrade}.csv"):
             agg_bldg = pl.read_csv(f"load_profiles/{state}/{id}-{upgrade}.csv")
