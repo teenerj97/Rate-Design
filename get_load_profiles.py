@@ -10,6 +10,10 @@ for parent in curr.parents:
 import os
 os.chdir(FILEPATHS["Bill Calculator"]["parent"])
 
+try:
+    from tqdm.notebook import tqdm
+except ImportError:
+    from tqdm import tqdm
 import boto3
 import polars as pl
 import io
@@ -52,19 +56,22 @@ def get_load_profiles(state, ids, upgrade=0, write=True):
 
     current_year = datetime.now().year
 
-    for id in ids:
-        try:
-            cur_bldg = download_building_load_profile(state, id, upgrade)
-        except:
-            continue
-        cur_bldg = cur_bldg.filter(pl.col("timestamp").dt.year()==2018).with_columns(
-            pl.Series("bldg_id", [id] * (cur_bldg.height-1)),
-            pl.col("timestamp").dt.replace(year=current_year).alias("timestamp")
-        )
+    pbar = tqdm(ids)
+    for id in pbar:
+        pbar.set_description(f"Downloading load profiles for upgrade {0}")
 
         if os.path.exists(f"load_profiles/{state}/{id}-{upgrade}.csv"):
             agg_bldg = pl.read_csv(f"load_profiles/{state}/{id}-{upgrade}.csv")
         else:
+            try:
+                cur_bldg = download_building_load_profile(state, id, upgrade)
+            except:
+                print(f"Building ID {id} load profile not available")
+                continue
+            cur_bldg = cur_bldg.filter(pl.col("timestamp").dt.year()==2018).with_columns(
+                pl.Series("bldg_id", [id] * (cur_bldg.height-1)),
+                pl.col("timestamp").dt.replace(year=current_year).alias("timestamp")
+            )
             # format dates
             agg_bldg = cur_bldg.with_columns(pl.col("timestamp").dt.strftime("%Y-%m-%dT%H:%M:%S.%f").alias("timestamp")).select([
                 "bldg_id",

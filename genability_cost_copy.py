@@ -2,6 +2,10 @@ import os
 import polars as pl
 import importlib
 import scipy.stats as st
+try:
+    from tqdm.notebook import tqdm
+except ImportError:
+    from tqdm import tqdm
 import get_load_profiles
 importlib.reload(get_load_profiles)
 from get_load_profiles import get_load_profiles
@@ -22,9 +26,11 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
 
     # API call to Genability
     bills = []
-    name = ""
-    # Get tariff once
-    for zip_code, building in zip(zip_codes, buildings):
+    name = ""    
+    
+    pbar = tqdm(buildings)
+    for zip_code, building in zip(zip_codes, pbar):
+        pbar.set_description(f"Processing hack electric bills for {elecTariff} and upgrade {upgrade}")
         if not name:
             name = get_tariff_gen(elecTariff, utility, zip_code, building)["tariff"][0]
         
@@ -65,7 +71,10 @@ def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
     # Retrives tariff once
     tariff = get_tariff_RA(state, gas_utility, gasTariff)
     bills = []
-    for building in buildings:
+    
+    pbar = tqdm(buildings)
+    for building in pbar:
+        pbar.set_description(f"Processing gas bills for upgrade {upgrade}")
         # Use cached bills if available
         if os.path.exists(f"Cost_Detail/{state}/{building['bldg_id'][0]}/gas-{upgrade}-{gasTariff}.csv"):
             bill = pl.read_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/gas-{upgrade}-{gasTariff}.csv")

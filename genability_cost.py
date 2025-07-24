@@ -4,8 +4,10 @@ import polars as pl
 import importlib
 import random
 import scipy.stats as st
-from collections import defaultdict
-from difflib import get_close_matches
+try:
+    from tqdm.notebook import tqdm
+except ImportError:
+    from tqdm import tqdm
 import get_load_profiles
 importlib.reload(get_load_profiles)
 from get_load_profiles import get_load_profiles
@@ -24,7 +26,10 @@ def electric_bill(elecTariff, state, zip_codes, buildings, weights, N, upgrade=0
     # API call to Genability
     bills = []
     annual_bill = 0
-    for zip_code, building in zip(zip_codes, buildings):
+
+    pbar = tqdm(buildings)
+    for zip_code, building in zip(zip_codes, pbar):
+        pbar.set_description(f"Processing gen electric bills for {elecTariff} and upgrade {upgrade}")
         # Use cached bills if available
         if os.path.exists(f"Cost_Detail/{state}/{building['bldg_id'][0]}/Gen/electric-{upgrade}-{elecTariff}.csv"):
             bill = pl.read_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/Gen/electric-{upgrade}-{elecTariff}.csv")
@@ -85,16 +90,18 @@ def electric_bill(elecTariff, state, zip_codes, buildings, weights, N, upgrade=0
     moe = st.norm.ppf(0.95) * se
 
     if upgrade:
-        return {"Name": name, "Upgrade": upgrade, "average": annual_bill, "moe": moe}
+        return {"Name": name, "Upgrade": upgrade, "distribution": bills, "average": annual_bill, "moe": moe}
     else:
-        return {"Name": name, "Upgrade": upgrade, "average": annual_bill, "moe": moe}
+        return {"Name": name, "Upgrade": upgrade, "distribution": bills, "average": annual_bill, "moe": moe}
 
 def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
  
     annual_bill = 0
     bills = []
 
-    for building in buildings:
+    pbar = tqdm(buildings)
+    for building in pbar:
+        pbar.set_description(f"Processing gas bills for upgrade {upgrade}")
         # Use cached bills if available
         if os.path.exists(f"Cost_Detail/{state}/{building['bldg_id'][0]}/gas-{upgrade}-{gasTariff}.csv"):
             bill = pl.read_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/gas-{upgrade}-{gasTariff}.csv")
@@ -125,9 +132,9 @@ def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
         moe = st.norm.ppf(0.95) * se
 
     if upgrade:
-        return {"Name": gasTariff, "Upgrade": upgrade, "average": annual_bill, "moe": moe}
+        return {"Name": gasTariff, "Upgrade": upgrade, "distribution": bills, "average": annual_bill, "moe": moe}
     else:
-        return {"Name": gasTariff, "Upgrade": upgrade, "average": annual_bill, "moe": moe}
+        return {"Name": gasTariff, "Upgrade": upgrade, "distribution": bills, "average": annual_bill, "moe": moe}
 
 def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """
@@ -223,7 +230,7 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
     # Calculate bills
     annual_electric_bill = []
     annual_gas_bill = []
-    
+
     for upgrade,building in buildings:
         if (upgrade in [0,16] and "Gas" in kwargs["heating_type"]) or len(gasTariff)==1:
             gasTariff_sub = gasTariff[0]
