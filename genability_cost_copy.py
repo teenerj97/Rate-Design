@@ -1,6 +1,7 @@
 import os
 import polars as pl
 import importlib
+import requests
 import scipy.stats as st
 try:
     from tqdm.notebook import tqdm
@@ -26,13 +27,24 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
 
     # API call to Genability
     bills = []
-    name = ""    
-    
+
+    # Optimizes if tariff does not have territory differentiator. No easy solution to optimizing when there are territories.
+    url = "https://api.genability.com/rest/public/territories"
+    params = {
+        "masterTariffId": elecTariff,
+        "zipCode": zip_codes[0]
+    }
+
+    response = requests.get(url, auth=(app_id, app_key), params=params).json()
+    territoryId = response["results"][0]["territoryId"] if len(response["results"])>0 else 0
+    territoryName = response["results"][0]["territoryName"] if territoryId else ""
+
+    tariff = get_tariff_gen(elecTariff, utility, zip_codes[0], buildings[0])
+    name = tariff["tariff"][0]
+
     pbar = tqdm(buildings)
     for zip_code, building in zip(zip_codes, pbar):
         pbar.set_description(f"Processing hack electric bills for {elecTariff} and upgrade {upgrade}")
-        if not name:
-            name = get_tariff_gen(elecTariff, utility, zip_code, building)["tariff"][0]
         
         # Use cached bills if available
         if os.path.exists(f"Cost_Detail/{state}/{building['bldg_id'][0]}/Hack/electric-{upgrade}-{elecTariff}.csv"):
@@ -43,7 +55,10 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
         else:
             # Checks territoryId on each iteration (no API call limit) but pulls the tariffs once for each territory and saves.
             # The saved tariffs are retrieved in subsequent calls.
-            tariff = get_tariff_gen(elecTariff, utility, zip_code, building)
+
+            # Only get tariff for each building if tariff differentiates by territory, otherwise use pre-calculated tariff above
+            if territoryName:
+                tariff = get_tariff_gen(elecTariff, utility, zip_code, building)
             
             # Bill calculation
             bill = calculate_bill_electric(tariff, building)
