@@ -197,7 +197,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     name = f"{tariff_name}_{territoryName}_{elecTariff}" if territoryName else f"{tariff_name}_{elecTariff}"
     df.write_csv(f"Electric_Tariffs/{utility}/{name}.csv")
 
-    return df
+    return df.unique()
 
 
 def calculate_bill_electric(df, building):
