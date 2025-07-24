@@ -195,6 +195,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         os.makedirs(f"Electric_Tariffs/{utility}", exist_ok=True)
 
     name = f"{tariff_name}_{territoryName}_{elecTariff}" if territoryName else f"{tariff_name}_{elecTariff}"
+    df = df.unique().sort("rateName")
     df.write_csv(f"Electric_Tariffs/{utility}/{name}.csv")
 
     return df.unique()
