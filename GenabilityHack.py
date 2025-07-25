@@ -89,15 +89,18 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         
         # Rate Determinant logic
         if rate.get("chargeType") == "FIXED_PRICE" and \
-                any(c>=0 for c in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["rateAmount"]) and \
-                any(q==12 or q==13 for q in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["itemQuantity"]) or \
-                (rate["rateBands"] or [{1:""}])[0].get("rateUnit")=="PERCENTAGE":
+            any(c>=0 for c in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["rateAmount"]) and \
+            any(q==12 or q==13 for q in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["itemQuantity"]):
             rate_determinant = "per month"
         elif rate.get("chargeType") == "FIXED_PRICE" and any(q<12 and q==round(q) for q in costs_breakdown.filter(pl.col("rateName")==rate["rateName"])["itemQuantity"]):
             rate_determinant = "per year"
+        elif rate.get("chargeType") == "QUANTITY" and (rate["rateBands"] or [{1:""}])[0].get("rateUnit")=="PERCENTAGE":
+            rate_determinant = "percent"
+        elif rate.get("chargeType") == "DEMAND_BASED":
+            rate_determinant = "per kw" # Always assuming 30min peak
         else:
             rate_determinant = "per kwh"
-        
+
         # Season Logic
         season = ""
         if rate.get("season",rate.get("timeOfUse",{}).get("season")):
@@ -110,7 +113,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         if "timeOfUse" in rate:
             tou=[]
             for p in rate["timeOfUse"]["touPeriods"]:
-                tou.append(([p["fromDayOfWeek"]+1,p["toDayOfWeek"]+1],[p["fromHour"], p["toHour"]]))
+                tou.append(([p["fromDayOfWeek"]+1,p["toDayOfWeek"]+1 if p["toDayOfWeek"]<6 else p["toDayOfWeek"]+2],[p["fromHour"], p["toHour"]]))
             tou = str(tou)
             tou_type = rate["timeOfUse"].get("touType", "OFF_PEAK")
         
@@ -118,7 +121,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         bands = rate.get("rateBands", [])
         has_cons_limits = any(b.get("hasConsumptionLimit") for b in bands)
         if not has_cons_limits or len(bands) == 1:
-            rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, "", "", season, tou, tou_type])
+            rows.append([name, rate_name, eff_date, "", rate_determinant, "", "", season, tou, tou_type])
         else:
             limits = [b.get("consumptionUpperLimit") for b in bands]
             prev_limit = None
@@ -127,21 +130,23 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
                     continue  # skip dupes
                 start = "" if i == 0 else prev_limit
                 end = limit if limit is not None else ""
-                rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, start, end, season, tou, tou_type])
+                rows.append([name, rate_name, eff_date, "", rate_determinant, start, end, season, tou, tou_type])
                 prev_limit = limit
 
     df = pl.DataFrame(rows, schema=[
         "tariff","rateName", "EffDate", "Rate", "Rate Determinant",
         "Start", "End", "Season", "tou", "period"
-    ], orient="row")
+    ])
 
     # group df by rateName
     df_grouped = df.group_by("rateName","Start","End","Rate Determinant",maintain_order=True).agg(pl.len().alias("df_count"))
     cb_grouped = costs_breakdown.group_by("rateName",maintain_order=True).agg([
         pl.len().alias("cb_count"),
         (pl.col("rateAmount") * pl.col("itemQuantity")).sum().alias("weighted_sum"),
+        (pl.col("cost").sum()/building["electricity.total"].sum()).alias("sum_%"), # Converting percentage based to per kwh - idea is to use base calc then scale based on consumption of new buildings
         pl.col("itemQuantity").sum().alias("total_qty"),
-        pl.col("rateAmount").alias("rate_list")  # keep for ordered match
+        pl.col("rateAmount").alias("rate_list"),  # keep as list for ordered match
+        (pl.col("cost")/building["electricity.total"].sum()).alias("rate_list_%")  # keep as list for ordered match
     ])
 
     # join stats
@@ -151,23 +156,24 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     rate_map = {}
     for row in summary.iter_rows(named=True):
         name = row["rateName"]
+        determinant = row["Rate Determinant"]
         dcount = row["df_count"]
         ccount = row["cb_count"]
-        factor = row["total_qty"] if row["Rate Determinant"]=="per year" else 1
+        factor = row["total_qty"] if determinant=="per year" else 1
 
         if ccount == 1 and dcount > 1:
             # broadcast single rate
-            val = factor * row["rate_list"][0]
+            val = factor * row["rate_list"][0] if determinant!="percent" else row["rate_list_%"]
             rate_map[name] = [val] * dcount
 
         elif dcount == 1:
             # assign weighted avg
-            avg = factor * row["weighted_sum"] / row["total_qty"] if row["total_qty"] else 0
+            avg = factor * row["weighted_sum"] / row["total_qty"] if determinant!="percent" and row["total_qty"] else row["sum_%"] if determinant=="percent" else 0
             rate_map[name] = [avg]
 
         elif ccount == dcount:
             # respect order
-            rate_map[name] = [r*factor for r in row["rate_list"]]
+            rate_map[name] = [r*factor for r in row["rate_list"]] if determinant!="percent" else row["rate_list_%"]
         
         else:
             # mismatch, fallback: NaNs
@@ -176,20 +182,21 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     final_rates = []
     group_counts = {}
 
-    for name in df["rateName"]:
-        from_tariff = [band["rateAmount"] * (-1 if band["isCredit"] else 1) if band["rateAmount"] else 0 for r in rates if r["rateName"]==name for band in r["rateBands"]]
+    for row in df.iter_rows(named=True):
+        name = row["rateName"]
+        from_tariff = [band["rateAmount"] * (-1 if band["isCredit"] else 1) for r in rates if r["rateName"]==name for band in r["rateBands"] if band["rateUnit"]!="PERCENTAGE"]
         if name not in group_counts:
             group_counts[name] = 0
         idx = group_counts[name]
         if any([c!=0 for c in from_tariff]):
             val_list=from_tariff
         else:
-            val_list = rate_map.get(name, [])
+            val_list = rate_map.get(name, []) if "per kw" != row["Rate Determinant"] else [r/12 for r in rate_map.get(name, [])]
         val = val_list[idx] if idx < len(val_list) else None
         final_rates.append(val)
         group_counts[name] += 1
 
-    df = df.with_columns(pl.Series("Rate", final_rates)).sort("rateName")
+    df = df.with_columns(pl.Series("Rate", final_rates)).unique().sort("rateName")
     
     if not os.path.exists(f"Electric_Tariffs/{utility}"):
         os.makedirs(f"Electric_Tariffs/{utility}", exist_ok=True)
@@ -198,7 +205,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     df = df.unique().sort("rateName")
     df.write_csv(f"Electric_Tariffs/{utility}/{name}.csv")
 
-    return df.unique()
+    return df
 
 
 def calculate_bill_electric(df, building):
@@ -214,7 +221,7 @@ def calculate_bill_electric(df, building):
         pl.col("timestamp").dt.month().alias("month"),
         pl.col("timestamp").dt.hour().alias("hour"),
         pl.col("timestamp").dt.date().alias("date"),
-    pl.col("timestamp").dt.weekday().alias("weekday")
+        pl.col("timestamp").dt.weekday().alias("weekday")
     ])
 
     # Initialize charges
@@ -296,5 +303,8 @@ def calculate_bill_electric(df, building):
 
         elif "year" in determinant:
             total_charges[name] += rate
+    
+        elif "percent" in determinant:
+            total_charges[name] += building_filter["electricity.total"].sum() * rate
 
     return total_charges
