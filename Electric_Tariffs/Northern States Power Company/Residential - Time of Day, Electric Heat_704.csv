@@ -9,4 +9,4 @@ tariff,rateName,EffDate,Rate,Rate Determinant,Start,End,Season,tou,period
 "Residential - Time of Day, Electric Heat",Summer On-Peak Rate,2025-01-01,0.25879,per kwh,"","",06/01-09/30,"[([1, 5], [9, 21])]",ON_PEAK
 "Residential - Time of Day, Electric Heat",Transmission Cost Recovery Charge,2025-01-01,0.00485492,per kwh,"","","","",""
 "Residential - Time of Day, Electric Heat",Winter Off-Peak Rate,2025-01-01,0.05171,per kwh,"","",10/01-05/31,"[([1, 5], [21, 9]), ([6, 7], [0, 0])]",OFF_PEAK
-"Residential - Time of Day, Electric Heat",Winter On-Peak Rate,2025-01-01,0.21408,per kwh,"","",10/01-05/31,"[([1, 5], [9, 21])]",ON_PEAK
+"Residential - Time of Day, Electric Heat",Winter On-Peak Rate,2025-01-01,0.13577,per kwh,"","",10/01-05/31,"[([1, 5], [9, 21])]",ON_PEAK
