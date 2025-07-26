@@ -78,7 +78,8 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     response = requests.get(url, auth=(app_id, app_key), params=params)
     data = response.json()["results"][0]
     rates = [r for r in data["rates"] if r["rateName"] in costs_breakdown["rateName"] and \
-            (any(c["rateAmount"]!=0 and c["itemQuantity"]!=0 for c in costs_breakdown.filter(pl.col("rateName")==r["rateName"]).to_dicts())) and \
+            (any(c["rateAmount"]!=0 and c["itemQuantity"]!=0 for c in costs_breakdown.filter(pl.col("rateName")==r["rateName"]).to_dicts()) or \
+             any(b["rateAmount"]!=0 for b in r["rateBands"])) and \
             r.get("territory",{"territoryId":territoryId})["territoryId"]==territoryId]
     
     # Update the logic with rate determinant, seasonal, time of use, and block handling
@@ -279,7 +280,7 @@ def calculate_bill_electric(df, building):
                         .then(end - start)
                         .otherwise(pl.col("month_total") - start)
                 )
-                .otherwise(1)
+                .otherwise(0)
                 .alias("adjusted_kwh_factor")
             ])
 
