@@ -9,7 +9,7 @@ for parent in curr.parents:
 
 import os
 os.chdir(FILEPATHS["Bill Calculator"]["parent"])
-#
+
 import requests
 import polars as pl
 from collections import defaultdict
@@ -249,28 +249,27 @@ def calculate_bill_electric(df, building):
         # Filter load for season
         building_filter = building.filter(pl.col("month").is_in(season_months))
 
+        # Filter for TOU if applicable
+        if tou:
+            temp = []
+            tou = eval(tou)
+            for t_d, t_h in tou:
+                start_day, end_day = t_d
+                start_time, end_time = t_h
+                if start_time < end_time:
+                    temp.append(building_filter.filter((pl.col("hour") >= start_time) & (pl.col("hour") < end_time) &
+                                                    (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
+                else:
+                    temp.append(building_filter.filter(((pl.col("hour") >= start_time) | (pl.col("hour") < end_time)) &
+                                                    (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
+            building_filter = pl.concat(temp)
+
         if "kwh" in determinant:
-            # Filter for TOU if applicable
-            if tou:
-                temp = []
-                tou = eval(tou)
-                for t_d, t_h in tou:
-                    start_day, end_day = t_d
-                    start_time, end_time = t_h
-                    if start_time < end_time:
-                        temp.append(building_filter.filter((pl.col("hour") >= start_time) & (pl.col("hour") < end_time) &
-                                                        (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
-                    else:
-                        temp.append(building_filter.filter(((pl.col("hour") >= start_time) | (pl.col("hour") < end_time)) &
-                                                        (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
-                building_filter = pl.concat(temp)
-                
             # Compute monthly totals
-            building_filter_monthly_total = (
+            building_filter = (
                 building_filter.group_by("month")
                 .agg(pl.col("electricity.total").sum().alias("month_total"))
             )
-            building_filter = building_filter.join(building_filter_monthly_total, on="month")
             
             # Consumption limit handling
             building_filter = building_filter.with_columns([
@@ -281,16 +280,10 @@ def calculate_bill_electric(df, building):
                         .otherwise(pl.col("month_total") - start)
                 )
                 .otherwise(0)
-                .alias("adjusted_kwh_factor")
+                .alias("month_total")
             ])
 
-            building_filter = building_filter.with_columns([
-                (pl.col("electricity.total") * pl.col("adjusted_kwh_factor") / pl.col("month_total"))
-                .fill_nan(0)
-                .alias("adjusted_kwh")
-            ])
-
-            kwh = building_filter["adjusted_kwh"].sum()
+            kwh = building_filter["monthly_total"].sum()
             charge = rate * kwh
             total_charges[name] += charge
 
