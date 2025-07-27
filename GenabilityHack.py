@@ -197,7 +197,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         final_rates.append(val)
         group_counts[name] += 1
 
-    df = df.with_columns(pl.Series("Rate", final_rates)).unique().sort("rateName")
+    df = df.with_columns(pl.Series("Rate", final_rates))
     
     if not os.path.exists(f"Electric_Tariffs/{utility}"):
         os.makedirs(f"Electric_Tariffs/{utility}", exist_ok=True)
@@ -292,6 +292,17 @@ def calculate_bill_electric(df, building):
 
             kwh = building_filter["adjusted_kwh"].sum()
             charge = rate * kwh
+            total_charges[name] += charge
+
+        elif "kw" in determinant:
+            building_filter = (
+                building_filter.group_by("month").agg(
+                (pl.col("electricity.total").rolling_sum(window_size=2).max()/0.5).alias("30min_peak_demand")
+                )
+            )
+            
+            kw = building_filter["30min_peak_demand"].sum()
+            charge = rate * kw
             total_charges[name] += charge
 
         elif "month" in determinant or "bill" in determinant:
