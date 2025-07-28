@@ -80,7 +80,7 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
     se = (wv / n_eff)**0.5
     moe = st.norm.ppf(0.95) * se
 
-    return {"Name": name, "Upgrade": upgrade, "distribution": bills, "average": average, "moe": moe}
+    return {"Name": name, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": average, "moe": moe}
 
 def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
     # Retrives tariff once
@@ -119,7 +119,7 @@ def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
     se = (wv / n_eff)**0.5
     moe = st.norm.ppf(0.95) * se
 
-    return {"Name": gasTariff, "Upgrade": upgrade, "distribution": bills, "average": average, "moe": moe}
+    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": average, "moe": moe}
 
 def genability_costs_hack(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """

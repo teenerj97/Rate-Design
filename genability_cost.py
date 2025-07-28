@@ -89,7 +89,7 @@ def electric_bill(elecTariff, state, zip_codes, buildings, weights, N, upgrade=0
         se *= ((N - n) / (N - 1))**0.5
     moe = st.norm.ppf(0.95) * se
 
-    return {"Name": name, "Upgrade": upgrade, "distribution": bills, "average": annual_bill, "moe": moe}
+    return {"Name": name, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
 
 def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
  
@@ -128,7 +128,7 @@ def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
             se *= ((N - n) / (N - 1))**0.5
         moe = st.norm.ppf(0.95) * se
 
-    return {"Name": gasTariff, "Upgrade": upgrade, "distribution": bills, "average": annual_bill, "moe": moe}
+    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
 
 def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """
