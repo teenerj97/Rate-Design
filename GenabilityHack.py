@@ -283,7 +283,7 @@ def calculate_bill_electric(df, building):
                 .alias("month_total")
             ])
 
-            kwh = building_filter["monthly_total"].sum()
+            kwh = building_filter["month_total"].sum()
             charge = rate * kwh
             total_charges[name] += charge
 
