@@ -5,3 +5,5 @@ cleaned_resstock_data/*
 !cleaned_resstock_data/sales_data.csv
 !cleaned_resstock_data/sales_data.xlsx
 filepaths.json
+Cost_Detail/*
+load_profiles/*
