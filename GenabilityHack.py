@@ -18,6 +18,7 @@ from datetime import datetime
 
 def get_tariff_gen(elecTariff, utility, zip_code, building):
 
+    # First get the territory of the building we are using
     app_id = "3df8e135-968d-4399-9879-2a1c6a3de30c"
     app_key = "e51974c7-996b-4698-9628-71950d223364"
 
@@ -38,7 +39,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
                 df = pl.read_csv(os.path.join(root,f))
                 return df
 
-    
+    # Run a single calculation to get all the rates from the tariff
     url = "https://api.genability.com/rest/v1/ondemand/calculate"
     params = {
         "masterTariffId": elecTariff,
@@ -64,6 +65,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     cols = ["rateName", "rateAmount", "itemQuantity","cost","period"] if "period" in costs_breakdown.columns else ["rateName", "itemQuantity", "rateAmount","cost"]
     costs_breakdown = costs_breakdown.select(cols).sort("rateName")
 
+    # Get the tariff from genability for cross-refercing rates from the calculation
     url = "https://api.genability.com/rest/public/tariffs"
 
     params = {
@@ -77,6 +79,9 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
 
     response = requests.get(url, auth=(app_id, app_key), params=params)
     data = response.json()["results"][0]
+
+    # Filter the rates from the tariff according to whether they appear in the cost calculation or whether they have non-zero values in the tariff itself
+    # (filtered by territory to ensure only relveant rates get captured - also captures rates where no territory specified)
     rates = [r for r in data["rates"] if r["rateName"] in costs_breakdown["rateName"] and \
             (any(c["rateAmount"]!=0 and c["itemQuantity"]!=0 for c in costs_breakdown.filter(pl.col("rateName")==r["rateName"]).to_dicts()) or \
              any(b["rateAmount"]!=0 for b in r["rateBands"])) and \
@@ -102,13 +107,13 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         else:
             rate_determinant = "per kwh"
 
-        # Season Logic
+        # Season Logic - parsed as mm/dd-mm/dd
         season = ""
         if rate.get("season",rate.get("timeOfUse",{}).get("season")):
             s = rate.get("season",rate.get("timeOfUse",{}).get("season"))
             season = f'{s["seasonFromMonth"]:02d}/{s["seasonFromDay"]:02d}-{s["seasonToMonth"]:02d}/{s["seasonToDay"]:02d}'
         
-        # Time of Use Logic
+        # Time of Use Logic - parsed as (([wd,wd],[hh,hh]),...)
         tou_type = ""
         tou = ""
         if "timeOfUse" in rate:
@@ -139,6 +144,9 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         "Start", "End", "Season", "tou", "period"
     ])
 
+    # This logic is to handle when the calculate API returns multiple costs per rate
+    # It also retrievs the rate from the tariff, overriding the Calculate API result when applicable
+
     # group df by rateName
     df_grouped = df.group_by("rateName","Start","End","Rate Determinant",maintain_order=True).agg(pl.len().alias("df_count"))
     cb_grouped = costs_breakdown.group_by("rateName",maintain_order=True).agg([
@@ -162,12 +170,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         ccount = row["cb_count"]
         factor = row["total_qty"] if determinant=="per year" else 1
 
-        if ccount == 1 and dcount > 1:
-            # broadcast single rate
-            val = factor * row["rate_list"][0] if determinant!="percent" else row["rate_list_%"]
-            rate_map[name] = [val] * dcount
-
-        elif dcount == 1:
+        if dcount == 1 and ccount>1:
             # assign weighted avg
             avg = factor * row["weighted_sum"] / row["total_qty"] if determinant!="percent" and row["total_qty"] else row["sum_%"] if determinant=="percent" else 0
             rate_map[name] = [avg]
@@ -189,6 +192,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         if name not in group_counts:
             group_counts[name] = 0
         idx = group_counts[name]
+        # If rate from tariff has any non-zero values, use those instead of mapping
         if any([c!=0 for c in from_tariff]):
             val_list=from_tariff
         else:
