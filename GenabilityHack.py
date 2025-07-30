@@ -122,7 +122,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         bands = rate.get("rateBands", [])
         has_cons_limits = any(b.get("hasConsumptionLimit") for b in bands)
         if not has_cons_limits or len(bands) == 1:
-            rows.append([name, rate_name, eff_date, "", rate_determinant, "", "", season, tou, tou_type])
+            rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, "", "", season, tou, tou_type])
         else:
             limits = [b.get("consumptionUpperLimit") for b in bands]
             prev_limit = None
@@ -131,7 +131,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
                     continue  # skip dupes
                 start = "" if i == 0 else prev_limit
                 end = limit if limit is not None else ""
-                rows.append([name, rate_name, eff_date, "", rate_determinant, start, end, season, tou, tou_type])
+                rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, start, end, season, tou, tou_type])
                 prev_limit = limit
 
     df = pl.DataFrame(rows, schema=[
@@ -144,7 +144,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     cb_grouped = costs_breakdown.group_by("rateName",maintain_order=True).agg([
         pl.len().alias("cb_count"),
         (pl.col("rateAmount") * pl.col("itemQuantity")).sum().alias("weighted_sum"),
-        (pl.col("cost").sum()/building["electricity.total"].sum()).alias("sum_%"), # Converting percentage based to per kwh - idea is to use base calc then scale based on consumption of new buildings
+        (pl.col("cost").sum()/building["electricity.total"].sum()).alias("sum_%"), # Converting percentage based to per kwh - idea is to use first pass for rate then scale based on consumption of new buildings
         pl.col("itemQuantity").sum().alias("total_qty"),
         pl.col("rateAmount").alias("rate_list"),  # keep as list for ordered match
         (pl.col("cost")/building["electricity.total"].sum()).alias("rate_list_%")  # keep as list for ordered match
@@ -214,7 +214,7 @@ def calculate_bill_electric(df, building):
     # Drop rows with null Rate
     df = df.filter(pl.col("Rate").is_not_null())
 
-    # Prepare load data with month, hour, and date columns
+    # Prepare load data with month, hour, date and weekday columns
     building = building.with_columns([
         pl.col("timestamp").str.to_datetime().alias("timestamp")
     ])
@@ -242,7 +242,7 @@ def calculate_bill_electric(df, building):
         if isinstance(season, str) and "/" in season:
             mo1, day1 = map(int, season.split("-")[0].split("/"))
             mo2, day2 = map(int, season.split("-")[1].split("/"))
-            season_months = list(range(mo1, mo2 + 1)) if mo1 <= mo2 else list(range(mo1, 13)) + list(range(1, mo2 + 1))
+            season_months = list(range(mo1, mo2 + 1)) if mo1 <= mo2 else list(range(1, mo2 + 1)) + list(range(mo1, 13))
         else:
             season_months = list(range(1, 13))
 
