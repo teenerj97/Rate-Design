@@ -44,7 +44,8 @@ def segment(state, utility, gas_utility, kwargs):
     # Gas Utility name invalid for state or no buildings with the selected electric utility are served gas by the selected gas utility
     if df_util.is_empty():
         possible_matches = (
-            df_util.select(pl.col("in.gas_utility_name").str.split("|"))
+            df.filter(pl.col("in.state") == state)
+            .select(pl.col("in.gas_utility_name").str.split("|"))
             .explode("in.gas_utility_name")
             .unique()
             .to_series()
@@ -86,12 +87,12 @@ def segment(state, utility, gas_utility, kwargs):
 
 if __name__=="__main__":
     
-    state = "MN"
-    utility = "Northern States Power Co - Minnesota"  # or any utility you're filtering for
-    gas_utility = "Northern States Power Company - XcelEnergy"
+    state = "NY"
+    utility = "Consolidated Edison Co-NY Inc"  # or any utility you're filtering for
+    gas_utility = "ConEd"
     segment(state,utility,gas_utility,{
-        "heating_type":"",
-        "building_type":"",
+        "heating_type":"Natural Gas",
+        "building_type":"SF",
         "area":"",
         "income":"",
         "vintage":"",
