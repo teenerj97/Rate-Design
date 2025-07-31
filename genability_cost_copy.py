@@ -25,7 +25,6 @@ app_key = "e51974c7-996b-4698-9628-71950d223364"
 
 def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, weights):
 
-    # API call to Genability
     bills = []
 
     # Optimizes if tariff does not have territory differentiator. No easy solution to optimizing when there are territories.
@@ -51,7 +50,7 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
             bill = pl.read_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/Hack/electric-{upgrade}-{elecTariff}.csv")
             bill = bill["cost"].sum()
             bills.append(bill)
-        # If not cached, make API call
+        # If not cached, calculate the bill
         else:
             # Checks territoryId on each iteration (no API call limit) but pulls the tariffs once for each territory and saves.
             # The saved tariffs are retrieved in subsequent calls.
@@ -80,7 +79,7 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
     se = (wv / n_eff)**0.5
     moe = st.norm.ppf(0.95) * se
 
-    return {"Name": name, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": average, "moe": moe}
+    return {"Name": name, "tariff": elecTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": average, "moe": moe}
 
 def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
     # Retrives tariff once
@@ -119,7 +118,7 @@ def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
     se = (wv / n_eff)**0.5
     moe = st.norm.ppf(0.95) * se
 
-    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": average, "moe": moe}
+    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": average, "moe": moe}
 
 def genability_costs_hack(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """
@@ -164,14 +163,16 @@ def genability_costs_hack(elecTariffs, gasTariff, state, utility, gas_utility=""
         - If `upgrades` is specified, the function will also fetch and calculate costs for the upgradesd
             load profiles, returning both base and upgradesd bills.
     """
-    if any(v for k,v in kwargs.items()) and state and utility:
+    if state and utility:
         filtering = None
         for col_name, value in kwargs.items():
             if value:
                 condition = pl.col(col_name) == value
                 filtering = condition if filtering is None else (filtering & condition)
         try:
-            chosen_segment = segment(state, utility, gas_utility, kwargs).filter(filtering)
+            chosen_segment = segment(state, utility, gas_utility, kwargs)
+            if filtering is not None:
+                chosen_segment = chosen_segment.filter(filtering)
         except Exception as e:
             print(f"Segment entries or utility name led to an error, check them based on allowed options\n{e}")
             return

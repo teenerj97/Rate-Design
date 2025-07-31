@@ -89,7 +89,7 @@ def electric_bill(elecTariff, state, zip_codes, buildings, weights, N, upgrade=0
         se *= ((N - n) / (N - 1))**0.5
     moe = st.norm.ppf(0.95) * se
 
-    return {"Name": name, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
+    return {"Name": name, "tariff": elecTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
 
 def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
  
@@ -128,7 +128,7 @@ def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
             se *= ((N - n) / (N - 1))**0.5
         moe = st.norm.ppf(0.95) * se
 
-    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [b["bldg_id"][0] for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
+    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
 
 def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """
@@ -195,8 +195,8 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
         gas_weights = [float(w) for w in chosen_segment["gas_weights"].item().split("|")]
         full_segment_size = len(building_ids) # Used for Finite Population MOE Correction
         
-        idxs = random.sample(range(full_segment_size),10)
         if full_segment_size>10:
+            idxs = random.sample(range(full_segment_size),10)
             building_ids = [building_ids[idx] for idx in idxs]
             zip_codes = [zip_codes[idx] for idx in idxs]
             elec_weights = [elec_weights[idx] for idx in idxs]
