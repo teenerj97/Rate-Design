@@ -119,7 +119,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         if "timeOfUse" in rate:
             tou=[]
             for p in rate["timeOfUse"]["touPeriods"]:
-                tou.append(([p["fromDayOfWeek"]+1,p["toDayOfWeek"]+1 if p["toDayOfWeek"]<6 else p["toDayOfWeek"]+2],[p["fromHour"], p["toHour"]]))
+                tou.append(([p["fromDayOfWeek"]+1,p["toDayOfWeek"]+1],[p["fromHour"], p["toHour"]]))
             tou = str(tou)
             tou_type = rate["timeOfUse"].get("touType", "OFF_PEAK")
         
@@ -262,10 +262,10 @@ def calculate_bill_electric(df, building):
                 start_time, end_time = t_h
                 if start_time < end_time:
                     temp.append(building_filter.filter((pl.col("hour") >= start_time) & (pl.col("hour") < end_time) &
-                                                    (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
+                                                    (pl.col("weekday")>= start_day) & (pl.col("weekday") <= end_day)))
                 else:
                     temp.append(building_filter.filter(((pl.col("hour") >= start_time) | (pl.col("hour") < end_time)) &
-                                                    (pl.col("weekday")>= start_day) & (pl.col("weekday") < end_day)))
+                                                    (pl.col("weekday")>= start_day) & (pl.col("weekday") <= end_day)))
             building_filter = pl.concat(temp)
 
         if "kwh" in determinant:
