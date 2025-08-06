@@ -1,4 +1,5 @@
 cleaned_resstock_data/*
+__pycache__
 !cleaned_resstock_data/full_data_with_utility.csv
 !cleaned_resstock_data/gas_sales_data.csv
 !cleaned_resstock_data/gas_sales_orig.csv
