@@ -19,6 +19,9 @@ from segments import segment
 import GenabilityHack as GenabilityHack
 importlib.reload(GenabilityHack)
 from GenabilityHack import get_tariff_gen, calculate_bill_electric
+# import Bill_Object
+# importlib.reload(Bill_Object)
+from Bill_Object import Bill, BillList
 
 app_id = "3df8e135-968d-4399-9879-2a1c6a3de30c"
 app_key = "e51974c7-996b-4698-9628-71950d223364"
@@ -69,17 +72,7 @@ def electric_bill(elecTariff, state, utility, zip_codes, buildings, upgrade, wei
             costs_breakdown.write_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/Hack/electric-{upgrade}-{elecTariff}.csv")
             bills.append(sum(bill.values()))
 
-    weights = [float(w) for w in weights]
-    average = sum(bill*weight for bill,weight in zip(bills,weights))/sum(weights)
-    
-    # Calculate the margin of error using std dev
-    den = sum(weights) - sum(wi*wi for wi in weights)/sum(weights)
-    wv = sum(wi*(ci - average)**2 for ci,wi in zip(bills, weights)) / max(den,1)
-    n_eff = sum(weights)**2 / sum(wi*wi for wi in weights)
-    se = (wv / n_eff)**0.5
-    moe = st.norm.ppf(0.95) * se
-
-    return {"Name": name, "tariff": elecTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": average, "moe": moe}
+    return Bill("electric", name, elecTariff, upgrade, [int(b["bldg_id"][0]) for b in buildings], bills, weights)
 
 def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
     # Retrives tariff once
@@ -108,17 +101,7 @@ def gas_bill(gasTariff, state, gas_utility, buildings, upgrade, weights):
             costs_breakdown.write_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/gas-{upgrade}-{gasTariff}.csv")
             bills.append(sum(bill.values()))
 
-    weights = [float(w) for w in weights]
-    average = sum(bill*weight for bill,weight in zip(bills,weights))/sum(weights)
-    
-    # Calculate the margin of error using std dev
-    den = sum(weights) - sum(wi*wi for wi in weights)/sum(weights)
-    wv = sum(wi*(ci - average)**2 for ci,wi in zip(bills, weights)) / max(den,1)
-    n_eff = sum(weights)**2 / sum(wi*wi for wi in weights)
-    se = (wv / n_eff)**0.5
-    moe = st.norm.ppf(0.95) * se
-
-    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": average, "moe": moe}
+    return Bill("gas", gasTariff, gasTariff, upgrade, [int(b["bldg_id"][0]) for b in buildings], bills, weights)
 
 def genability_costs_hack(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """
@@ -205,8 +188,8 @@ def genability_costs_hack(elecTariffs, gasTariff, state, utility, gas_utility=""
         buildings.append((u, get_load_profiles(state, building_ids, u)))
 
     # Calculate bills
-    electric_bills_distribution = []
-    gas_bills_distribution = []
+    electric_bills_distribution = BillList()
+    gas_bills_distribution = BillList()
     
     for upgrade,building in buildings:
         if (upgrade in [0,16] and "Gas" in kwargs["heating_type"]) or len(gasTariff)==1:

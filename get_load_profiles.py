@@ -54,8 +54,6 @@ def get_load_profiles(state, ids, upgrade=0, write=True):
 
     buildings = []
 
-    current_year = datetime.now().year
-
     pbar = tqdm(ids)
     for id in pbar:
         pbar.set_description(f"Downloading load profiles for upgrade {upgrade}, approx {int(len(ids)/60/2)}-{int(len(ids)/60)}mins")
@@ -68,9 +66,13 @@ def get_load_profiles(state, ids, upgrade=0, write=True):
             except:
                 print(f"Building ID {id} load profile not available")
                 continue
-            cur_bldg = cur_bldg.filter(pl.col("timestamp").dt.year()==2018).with_columns(
-                pl.Series("bldg_id", [id] * (cur_bldg.height-1)),
-                pl.col("timestamp").dt.replace(year=current_year).alias("timestamp")
+            # Ensures timestamps represent the beginning of the 15 minute interval
+            cur_bldg = cur_bldg.with_columns([
+                pl.col("timestamp").dt.offset_by("-15m").alias("timestamp")
+            ])
+            cur_bldg = cur_bldg.with_columns(
+                pl.Series("bldg_id", [id] * cur_bldg.height),
+                pl.col("timestamp").dt.replace(year=datetime.now().year).alias("timestamp")
             )
             # format dates
             agg_bldg = cur_bldg.with_columns(pl.col("timestamp").dt.strftime("%Y-%m-%dT%H:%M:%S.%f").alias("timestamp")).select([

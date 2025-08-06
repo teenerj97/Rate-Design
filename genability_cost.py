@@ -3,7 +3,6 @@ import os
 import polars as pl
 import importlib
 import random
-import scipy.stats as st
 try:
     from tqdm.notebook import tqdm
 except ImportError:
@@ -17,15 +16,17 @@ from RateAcuity import calculate_bill_gas, get_tariff_RA
 import segments
 importlib.reload(segments)
 from segments import segment
+# import Bill_Object
+# importlib.reload(Bill_Object)
+from Bill_Object import Bill, BillList
 
 app_id = "3df8e135-968d-4399-9879-2a1c6a3de30c"
 app_key = "e51974c7-996b-4698-9628-71950d223364"
 
-def electric_bill(elecTariff, state, zip_codes, buildings, weights, N, upgrade=0):
+def electric_bill(elecTariff, state, zip_codes, buildings, weights, upgrade=0):
 
     # API call to Genability
     bills = []
-    annual_bill = 0
 
     pbar = tqdm(buildings)
     for zip_code, building in zip(zip_codes, pbar):
@@ -77,23 +78,10 @@ def electric_bill(elecTariff, state, zip_codes, buildings, weights, N, upgrade=0
             bill = float(data['totalCost'])
             bills.append(bill)
 
-    annual_bill = sum(bill*weight for bill,weight in zip(bills,weights))/sum(weights)
+    return Bill("electric", name, elecTariff, upgrade, [int(b["bldg_id"][0]) for b in buildings], bills, weights)
 
-    # Calculate the margin of error using finite population correction and std dev
-    n = len(bills)
-    den = sum(weights) - sum(wi*wi for wi in weights)/sum(weights)
-    wv = sum(wi*(ci - annual_bill)**2 for ci,wi in zip(bills, weights)) / max(den,1)
-    n_eff = sum(weights)**2 / sum(wi*wi for wi in weights)
-    se = (wv / n_eff)**0.5
-    if N>10:
-        se *= ((N - n) / (N - 1))**0.5
-    moe = st.norm.ppf(0.95) * se
-
-    return {"Name": name, "tariff": elecTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
-
-def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
+def gas_bill(gasTariff, state, gas_utility, buildings, weights, upgrade=0):
  
-    annual_bill = 0
     bills = []
 
     pbar = tqdm(buildings)
@@ -115,20 +103,8 @@ def gas_bill(gasTariff, state, gas_utility, buildings, weights, N, upgrade=0):
                 os.makedirs(f"Cost_Detail/{state}/{building['bldg_id'][0]}")
             costs_breakdown.write_csv(f"Cost_Detail/{state}/{building['bldg_id'][0]}/gas-{upgrade}-{gasTariff}.csv")
             bills.append(sum(bill.values()))
-        
-        annual_bill = sum(bill*weight for bill,weight in zip(bills,weights))/sum(weights)
 
-        # Calculate the margin of error using finite population correction and std dev
-        n = len(bills)
-        den = sum(weights) - sum(wi*wi for wi in weights)/sum(weights)
-        wv = sum(wi*(ci - annual_bill)**2 for ci,wi in zip(bills, weights)) / max(den,1)
-        n_eff = sum(weights)**2 / sum(wi*wi for wi in weights)
-        se = (wv / n_eff)**0.5
-        if N>10:
-            se *= ((N - n) / (N - 1))**0.5
-        moe = st.norm.ppf(0.95) * se
-
-    return {"Name": gasTariff, "Upgrade": upgrade, "ids": [int(b["bldg_id"][0]) for b in buildings], "distribution": bills, "average": annual_bill, "moe": moe}
+    return Bill("gas", gasTariff, gasTariff, upgrade, [int(b["bldg_id"][0]) for b in buildings], bills, weights)
 
 def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwargs={}, upgrades=0):
     """
@@ -193,10 +169,9 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
         zip_codes = chosen_segment["zip_codes"].item().split("|")
         elec_weights = [float(w) for w in chosen_segment["elec_weights"].item().split("|")]
         gas_weights = [float(w) for w in chosen_segment["gas_weights"].item().split("|")]
-        full_segment_size = len(building_ids) # Used for Finite Population MOE Correction
         
-        if full_segment_size>10:
-            idxs = random.sample(range(full_segment_size),10)
+        if len(building_ids)>10:
+            idxs = random.sample(range(len(building_ids)),10)
             building_ids = [building_ids[idx] for idx in idxs]
             zip_codes = [zip_codes[idx] for idx in idxs]
             elec_weights = [elec_weights[idx] for idx in idxs]
@@ -212,7 +187,6 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
         zip_codes = ["95206"]
         elec_weights = [252.3016387]
         gas_weights = [252.3016387]
-        full_segment_size = 1
             
 
     # Get load profiles
@@ -222,18 +196,18 @@ def genability_costs(elecTariffs, gasTariff, state, utility, gas_utility="",kwar
         buildings.append((u, get_load_profiles(state, building_ids, u)))
 
     # Calculate bills
-    annual_electric_bill = []
-    annual_gas_bill = []
+    annual_electric_bill = BillList()
+    annual_gas_bill = BillList()
 
     for upgrade,building in buildings:
         if (upgrade in [0,16] and "Gas" in kwargs["heating_type"]) or len(gasTariff)==1:
             gasTariff_sub = gasTariff[0]
         else:
             gasTariff_sub = gasTariff[1]
-        annual_gas_bill.append(gas_bill(gasTariff_sub, state, gas_utility, building, gas_weights, full_segment_size, upgrade))
+        annual_gas_bill.append(gas_bill(gasTariff_sub, state, gas_utility, building, gas_weights, upgrade))
 
     for elecTariff in elecTariffs:
         for upgrade,building in buildings:
-            annual_electric_bill.append(electric_bill(elecTariff, state, zip_codes, building, elec_weights, full_segment_size, upgrade))
+            annual_electric_bill.append(electric_bill(elecTariff, state, zip_codes, building, elec_weights, upgrade))
     
     return annual_electric_bill, annual_gas_bill

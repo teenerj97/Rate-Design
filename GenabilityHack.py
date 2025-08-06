@@ -92,6 +92,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
     for rate in rates:
         rate_name = rate["rateName"]
         eff_date = rate["fromDateTime"].split("T")[0]
+        category = rate.get("chargeClass", "")
         
         # Rate Determinant logic
         if rate.get("chargeType") == "FIXED_PRICE" and \
@@ -103,9 +104,14 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         elif rate.get("chargeType") == "QUANTITY" and (rate["rateBands"] or [{1:""}])[0].get("rateUnit")=="PERCENTAGE":
             rate_determinant = "percent"
         elif rate.get("chargeType") == "DEMAND_BASED":
-            rate_determinant = "per kw" # Always assuming 30min peak
-        else:
+            if "60min" in rate["quantityKey"]:
+                rate_determinant = "per 60min kw"
+            else:
+                rate_determinant = "per 30min kw"
+        elif rate.get("chargeType") == "CONSUMPTION_BASED":
             rate_determinant = "per kwh"
+        else:
+            continue
 
         # Season Logic - parsed as mm/dd-mm/dd
         season = ""
@@ -119,6 +125,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         if "timeOfUse" in rate:
             tou=[]
             for p in rate["timeOfUse"]["touPeriods"]:
+                p["toHour"] = p["toHour"] if p["toHour"] else 24
                 tou.append(([p["fromDayOfWeek"]+1,p["toDayOfWeek"]+1],[p["fromHour"], p["toHour"]]))
             tou = str(tou)
             tou_type = rate["timeOfUse"].get("touType", "OFF_PEAK")
@@ -127,7 +134,7 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
         bands = rate.get("rateBands", [])
         has_cons_limits = any(b.get("hasConsumptionLimit") for b in bands)
         if not has_cons_limits or len(bands) == 1:
-            rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, "", "", season, tou, tou_type])
+            rows.append([tariff_name, rate_name, eff_date, category, "", rate_determinant, "", "", season, tou, tou_type])
         else:
             limits = [b.get("consumptionUpperLimit") for b in bands]
             prev_limit = None
@@ -136,11 +143,11 @@ def get_tariff_gen(elecTariff, utility, zip_code, building):
                     continue  # skip dupes
                 start = "" if i == 0 else prev_limit
                 end = limit if limit is not None else ""
-                rows.append([tariff_name, rate_name, eff_date, "", rate_determinant, start, end, season, tou, tou_type])
+                rows.append([tariff_name, rate_name, eff_date, category, "", rate_determinant, start, end, season, tou, tou_type])
                 prev_limit = limit
 
     df = pl.DataFrame(rows, schema=[
-        "tariff","rateName", "EffDate", "Rate", "Rate Determinant",
+        "tariff","rateName", "EffDate", "Category", "Rate", "Rate Determinant",
         "Start", "End", "Season", "tou", "period"
     ])
 
@@ -292,13 +299,43 @@ def calculate_bill_electric(df, building):
             total_charges[name] += charge
 
         elif "kw" in determinant:
-            building_filter = (
-                building_filter.group_by("month").agg(
-                (pl.col("electricity.total").rolling_sum(window_size=2).max()/0.5).alias("30min_peak_demand")
+            # Since we did tou filtering, we need to ensure our rolling sum only captures contiguous timestamps
+            if "60min" in determinant:
+                building_filter = (
+                    building_filter
+                    .sort("timestamp")
+                    .with_columns([
+                        pl.col("electricity.total").rolling_sum(window_size=4).alias("kw_60min"),
+                        pl.col("timestamp").diff(n=1).dt.total_seconds().alias("d1"),
+                        pl.col("timestamp").diff(n=2).dt.total_seconds().alias("d2"),
+                        pl.col("timestamp").diff(n=3).dt.total_seconds().alias("d3")
+                    ])
+                    .filter(
+                        (pl.col("kw_60min").is_not_null()) &
+                        (pl.col("d1") == 900) &     # 15min
+                        (pl.col("d2") == 1800) &    # 30min
+                        (pl.col("d3") == 2700)      # 45min
+                    )
+                    .group_by("month")
+                    .agg(pl.col("kw_60min").max().alias("peak_demand"))
                 )
-            )
+            else:
+                building_filter = (
+                    building_filter
+                    .sort("timestamp")
+                    .with_columns([
+                        pl.col("electricity.total").rolling_sum(window_size=2).alias("kw_30min"),
+                        pl.col("timestamp").diff(n=1).dt.total_seconds().alias("d1")
+                    ])
+                    .filter(
+                        (pl.col("kw_30min").is_not_null()) &
+                        (pl.col("d1") == 900)         # 15min
+                    )
+                    .group_by("month")
+                    .agg(pl.col("kw_30min").max().alias("peak_demand"))
+                )
             
-            kw = building_filter["30min_peak_demand"].sum()
+            kw = building_filter["peak_demand"].sum()
             charge = rate * kw
             total_charges[name] += charge
 

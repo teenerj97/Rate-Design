@@ -37,7 +37,7 @@ def segment(state, utility, gas_utility, kwargs):
             .to_list()
         )
         suggestions = ", ".join(possible_matches)
-        raise Exception(f"Utility name invalid. Has to be one of the following: {suggestions}?")
+        raise Exception(f"Utility name invalid. Has to be one of the following: {suggestions}")
     
     df_util = df_util.filter(pl.col("in.gas_utility_name").str.contains(gas_utility,literal=True))
     
@@ -89,7 +89,7 @@ if __name__=="__main__":
     
     state = "NY"
     utility = "Consolidated Edison Co-NY Inc"  # or any utility you're filtering for
-    gas_utility = "ConEd"
+    gas_utility = "Consolidated Edison"
     segment(state,utility,gas_utility,{
         "heating_type":"Natural Gas",
         "building_type":"SF",
