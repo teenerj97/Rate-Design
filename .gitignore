@@ -1,15 +1,4 @@
-cleaned_resstock_data/*
 __pycache__
-!cleaned_resstock_data/full_data_with_utility.csv
-!cleaned_resstock_data/gas_sales_data.csv
-!cleaned_resstock_data/gas_sales_orig.csv
-!cleaned_resstock_data/sales_data.csv
-!cleaned_resstock_data/sales_data.xlsx
-!cleaned_resstock_data/building_mapping.ipynb
-!cleaned_resstock_data/shapefiles/
-!cleaned_resstock_data/shapefiles/tl_2024_us_state*
-!cleaned_resstock_data/shapefiles/Gas Territories Fixed*
-!cleaned_resstock_data/shapefiles/Electric Territory IOU*
 filepaths.json
 Cost_Detail/*
 load_profiles/*
